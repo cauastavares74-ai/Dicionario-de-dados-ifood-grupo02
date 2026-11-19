@@ -1,0 +1,2561 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Dicionário de Dados interativo do Sistema de Gestão de Pedidos e Entregas — iFood, Grupo 2.">
+  <meta name="theme-color" content="#EA1D2C">
+  <title>Dicionário de Dados | iFood — Grupo 2</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <button class="icon-button mobile-menu-button" id="mobileMenuButton" aria-label="Abrir navegação"><i class="fa-solid fa-bars"></i></button>
+    <a class="brand-lockup" href="#inicio" aria-label="Início do dicionário">
+      <span class="brand-mark">iF</span><span class="brand-copy"><strong>Dicionário de Dados</strong><small>iFood · Grupo 2</small></span>
+    </a>
+    <div class="topbar-actions">
+      <span class="topbar-meta d-none d-md-inline">Fundação Santo André · Ciências da Computação</span>
+      <button class="icon-button theme-button" id="themeToggle" aria-label="Alternar tema claro e escuro" title="Alternar tema"><i class="fa-solid fa-moon"></i></button>
+    </div>
+  </header>
+
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-heading">NAVEGAÇÃO</div>
+      <a class="side-link active" href="#inicio"><i class="fa-solid fa-gauge-high"></i> Visão geral</a>
+      <a class="side-link" href="#governanca"><i class="fa-solid fa-shield-halved"></i> Governança</a>
+      <a class="side-link" href="#auditoria"><i class="fa-solid fa-clipboard-check"></i> Auditoria de coerência</a>
+      <div class="sidebar-heading table-nav-heading">ENTIDADES <span id="sidebarTableCount">22</span></div>
+      <div class="sidebar-table-nav" id="sidebarTableNav" aria-label="Tabelas do banco"></div>
+      <div class="sidebar-footnote">Modelo acadêmico<br>MySQL 8.0.36+</div>
+    </aside>
+    <button class="sidebar-scrim" id="sidebarScrim" aria-label="Fechar navegação"></button>
+
+    <main class="main-content" id="inicio">
+      <section class="hero-section">
+        <div class="hero-kicker"><span class="status-dot"></span> DOCUMENTAÇÃO DE GOVERNANÇA DE DADOS</div>
+        <div class="hero-layout">
+          <div class="hero-copy">
+            <div class="hero-eyebrow">iFood · Grupo 2</div>
+            <h1>Sistema de Gestão de<br><span>Pedidos e Entregas</span></h1>
+            <p class="hero-description">Dicionário de Dados interativo para consulta de atributos, regras de negócio, integridade, privacidade, linhagem e permissões de acesso.</p>
+            <div class="hero-chips"><span><i class="fa-solid fa-database"></i> MySQL 8.0.36+</span><span><i class="fa-solid fa-table"></i> 22 tabelas</span><span><i class="fa-solid fa-list"></i> 185 colunas</span></div>
+          </div>
+          <div class="hero-visual" aria-hidden="true"><div class="hero-visual-ring"></div><div class="hero-visual-card"><div class="visual-card-top"><span class="visual-dot red"></span><span class="visual-dot amber"></span><span class="visual-dot green"></span></div><div class="visual-card-title">MODELO RELACIONAL</div><div class="visual-node node-a"><i class="fa-solid fa-user"></i><span>cliente</span></div><div class="visual-line line-a"></div><div class="visual-node node-b"><i class="fa-solid fa-bag-shopping"></i><span>pedido</span></div><div class="visual-line line-b"></div><div class="visual-node node-c"><i class="fa-solid fa-store"></i><span>restaurante</span></div><div class="visual-node node-d"><i class="fa-solid fa-truck"></i><span>entrega</span></div></div></div>
+        </div>
+      </section>
+
+      <section class="identity-panel panel-card" aria-labelledby="projectIdentityTitle">
+        <div class="section-heading-row"><div><div class="section-kicker">IDENTIFICAÇÃO</div><h2 id="projectIdentityTitle">Projeto de modelagem de banco de dados</h2></div><span class="academic-label">Projeto acadêmico</span></div>
+        <p class="scope-text">Banco de dados relacional acadêmico para registrar clientes, restaurantes parceiros, cardápios, pedidos, itens, pagamentos, cupons, entregas, avaliações, cancelamentos, estornos, auditoria e solicitações de direitos LGPD. O modelo cobre a camada de dados e as regras associadas; integrações de ERP/SEFAZ, roteirização/GPS em tempo real, processamento efetivo em adquirentes e interface/aplicativo permanecem fora do escopo descrito.</p>
+        <div class="identity-grid">
+          <div class="identity-item"><span class="identity-label">Tecnologia</span><strong>MySQL 8.0.36+</strong><small>InnoDB · utf8mb4 · utf8mb4_0900_ai_ci</small></div>
+          <div class="identity-item"><span class="identity-label">Instituição / disciplina</span><strong>Fundação Santo André</strong><small>Ciências da Computação · SQL — Structured Query Language</small></div>
+          <div class="identity-item"><span class="identity-label">Orientador</span><strong>Prof. Diego Marques de Carvalho</strong><small>Especificação de requisitos v1.1</small></div>
+          <div class="identity-item"><span class="identity-label">Equipe</span><strong>Grupo 2 · 4 integrantes</strong><small>Responsabilidades de governança propostas para fins acadêmicos</small></div>
+        </div>
+        <div class="team-grid" id="teamGrid"></div>
+      </section>
+
+      <section class="stats-grid" aria-label="Resumo do modelo">
+        <div class="stat-card"><span class="stat-icon"><i class="fa-solid fa-table-list"></i></span><strong>22</strong><span>Tabelas relacionais</span></div>
+        <div class="stat-card"><span class="stat-icon"><i class="fa-solid fa-list-check"></i></span><strong>185</strong><span>Colunas documentadas</span></div>
+        <div class="stat-card"><span class="stat-icon"><i class="fa-solid fa-eye"></i></span><strong>5</strong><span>Views no DDL</span></div>
+        <div class="stat-card"><span class="stat-icon"><i class="fa-solid fa-gears"></i></span><strong>65</strong><span>Triggers no DDL</span></div>
+      </section>
+
+      <section class="control-panel panel-card" aria-label="Ferramentas do dicionário">
+        <div class="control-topline"><div><div class="section-kicker">EXPLORAR MODELO</div><h2>Dicionário de Dados</h2><p>Pesquise por tabela ou atributo. Os resultados são filtrados instantaneamente.</p></div><div class="control-buttons">
+          <a class="btn btn-outline-secondary btn-sm" href="docs/Especificacao_Requisitos_Regras_Negocio_BD.pdf" download><i class="fa-solid fa-file-pdf me-2"></i>Requisitos PDF</a>
+          <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#derModal"><i class="fa-solid fa-diagram-project me-2"></i>Abrir DER</button>
+          <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ddlModal"><i class="fa-solid fa-code me-2"></i>Abrir DDL</button>
+        </div></div>
+        <div class="search-row"><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="search" id="dictionarySearch" placeholder="Buscar por tabela ou coluna..." autocomplete="off" aria-label="Pesquisar tabela ou coluna"><kbd>⌘ K</kbd></div><button class="btn btn-light btn-sm clear-search" id="clearSearch">Limpar</button><span class="results-counter" id="resultsCounter">Exibindo 22 tabelas · 185 colunas</span></div>
+        <div class="filter-row"><span class="filter-caption">CLASSIFICAÇÃO:</span><button class="filter-chip active" data-privacy-filter="all">Todas</button><button class="filter-chip" data-privacy-filter="DP">Dados pessoais</button><button class="filter-chip" data-privacy-filter="N/A">Não aplicável</button></div>
+      </section>
+
+      <section id="dictionarySections" class="dictionary-sections" aria-live="polite"></section>
+      <div id="emptyState" class="empty-state panel-card" hidden><i class="fa-solid fa-magnifying-glass"></i><h3>Nenhum resultado encontrado</h3><p>Tente outra palavra ou limpe os filtros.</p></div>
+
+      <section id="governanca" class="governance-section panel-card">
+        <div class="section-kicker">GOVERNANÇA E CULTURA DE DADOS</div><h2>Data Literacy: dados compreensíveis e confiáveis</h2>
+        <p>Para este modelo, Data Literacy significa permitir que os integrantes e futuros responsáveis pela operação compreendam o significado dos dados, as regras que os restringem, suas origens e quem pode utilizá-los. Alinhado às práticas de gestão de dados do DAMA-DMBOK e à visão de governança e controle do COBIT, o dicionário cria uma linguagem comum entre requisitos, modelagem e uso do banco. Isso ajuda o Grupo 2 a reduzir interpretações divergentes sobre pedidos, pagamentos e entregas, reconhecer dados pessoais sujeitos à LGPD, rastrear mudanças e orientar decisões de acesso, qualidade e manutenção. O documento é um artefato acadêmico de governança; não certifica conformidade jurídica ou técnica da operação real da iFood.</p>
+        <div class="governance-grid"><div class="governance-tile"><i class="fa-solid fa-book-open"></i><strong>Glossário e significado</strong><span>Definições padronizadas de entidades, atributos e domínios.</span></div><div class="governance-tile"><i class="fa-solid fa-route"></i><strong>Linhagem dos dados</strong><span>Relação entre origem, persistência e consumo do dado.</span></div><div class="governance-tile"><i class="fa-solid fa-user-lock"></i><strong>Privacidade e RBAC</strong><span>Classificação preliminar de dados pessoais e matriz de acesso.</span></div><div class="governance-tile"><i class="fa-solid fa-list-check"></i><strong>Integridade e controle</strong><span>Chaves, constraints e regras documentadas no DDL.</span></div></div>
+        <div class="privacy-legend"><strong>Legenda de privacidade</strong><span class="privacy-badge dps">[DPS]</span><span>Dado pessoal sensível</span><span class="privacy-badge dp">[DP]</span><span>Dado pessoal</span><span class="privacy-badge na">[N/A]</span><span>Não aplicável ao campo isoladamente</span><small>Não foram identificadas colunas de categorias especiais de dados pessoais da LGPD neste DDL. Dados financeiros e identificadores permanecem protegidos como dados pessoais quando vinculáveis a uma pessoa.</small></div>
+        <div class="rbac-legend"><strong>RBAC — legenda:</strong> C = criar/inserir; R = consultar; U = atualizar/inativar; * = somente registros próprios; — = sem acesso. A matriz é reproduzida da seção 3.1 da especificação (páginas 20–21). A aplicação de privilégios SQL e filtros por titular deve ser configurada no ambiente de execução.</div>
+      </section>
+
+      <section id="auditoria" class="audit-section panel-card">
+        <div class="section-heading-row"><div><div class="section-kicker">PARTE 2 · ANÁLISE DE COERÊNCIA</div><h2>Auditoria dos artefatos</h2><p>Comparação da especificação v1.1, DER oficial em PNG e script DDL fornecido.</p></div><span class="audit-status"><i class="fa-solid fa-triangle-exclamation"></i> Pendências antes da publicação final</span></div>
+        <div class="audit-intro"><strong>Resultado:</strong> a documentação está suficientemente completa para compor uma versão de trabalho do dicionário, mas foram identificadas divergências e controles operacionais que precisam ser esclarecidos/corrigidos. Esta versão não deve ser tratada como publicação final aprovada.</div>
+        <div class="audit-findings">
+          <article class="finding-card"><div class="finding-number">01</div><div><h3>Coluna técnica ausente no DER e na especificação</h3><p>O DDL contém <code>endereco_cliente.id_cliente_principal_ativo</code>, coluna gerada a partir de <code>principal</code> e <code>ativo</code>, com índice UNIQUE. Ela não aparece no DER PNG nem na relação de atributos da seção 6.1 (página 31).</p><p class="correction"><strong>Correção sugerida:</strong> acrescentar a coluna à entidade <code>endereco_cliente</code> na seção 6.1 e no DER, identificando-a como coluna gerada técnica, ou alterar o DDL para implementar a unicidade sem coluna exposta. Como o dicionário deve refletir o DDL, ela está documentada nesta versão.</p><span class="finding-source">Fonte: DDL, linhas 212–238 · Especificação, página 31 · DER oficial</span></div></article>
+          <article class="finding-card"><div class="finding-number">02</div><div><h3>Exatamente um endereço principal versus no máximo um</h3><p>A regra de RF01 (página 9) exige exatamente um endereço principal entre os endereços ativos. O índice UNIQUE sobre a coluna gerada impede dois endereços principais ativos, mas isoladamente não garante a existência de pelo menos um. O próprio comentário operacional J do DDL transfere essa garantia para a transação/procedure de cadastro, porém o script não contém uma procedure específica de cadastro de cliente/endereço.</p><p class="correction"><strong>Correção sugerida:</strong> criar uma rotina transacional de cadastro/alteração de endereços que mantenha um principal ativo ao concluir a operação; alternativamente, delimitar claramente na especificação que o mínimo de um é garantido pela camada de aplicação e documentar essa validação. Não declarar que o UNIQUE isolado garante “exatamente um”.</p><span class="finding-source">Fonte: RF01, página 9 · seção 6.2, páginas 34–35 · DDL, comentário J ao final</span></div></article>
+          <article class="finding-card"><div class="finding-number">03</div><div><h3>Auditoria de dados de endereço e solicitações LGPD</h3><p>O DDL cria triggers de auditoria para cliente, entregador, restaurante, produto, pedido, pagamento, estorno, usuário e cupom, mas não apresenta triggers equivalentes para <code>endereco_cliente</code> e <code>solicitacao_titular</code>. Endereços contêm dados pessoais e as solicitações registram exercício de direitos do titular.</p><p class="correction"><strong>Correção sugerida:</strong> avaliar e incluir rotinas de auditoria para inclusões, alterações e inativações em <code>endereco_cliente</code> e para o ciclo de atendimento em <code>solicitacao_titular</code>, mascarando dados pessoais nos snapshots; se houver justificativa para não auditar, registrá-la na política.</p><span class="finding-source">Fonte: RNF01, página 18 · PR03, página 29 · definição das entidades, páginas 33–34 · DDL, seção 13</span></div></article>
+          <article class="finding-card"><div class="finding-number">04</div><div><h3>Matriz RBAC não provisionada no script</h3><p>A especificação define permissões por perfil nas páginas 20–21. O DDL valida alguns perfis e operações por triggers/procedures, mas não cria contas, roles nem comandos GRANT/REVOKE para provisionar os privilégios mínimos descritos em RNF12. O próprio DDL orienta que a aplicação implemente a matriz RBAC.</p><p class="correction"><strong>Correção sugerida:</strong> declarar formalmente que RBAC por titular e por estabelecimento é aplicado na camada de aplicação e acrescentar um script de implantação de roles/grants no ambiente, especialmente para proteger <code>log_auditoria</code> contra UPDATE/DELETE/TRUNCATE e limitar o uso das rotinas DEFINER.</p><span class="finding-source">Fonte: RNF01 e RNF12, páginas 18 e 20 · matriz RBAC, páginas 20–21 · DDL, observações operacionais</span></div></article>
+          <article class="finding-card"><div class="finding-number">05</div><div><h3>Retenção e arquivamento transacional</h3><p>PR01 determina retenção de cinco anos e arquivamento após o prazo. O DDL bloqueia exclusões físicas em entidades históricas e agenda anonimização de titulares após cinco anos sem pedido/entrega, mas não implementa rotina ou destino de arquivamento dos dados transacionais.</p><p class="correction"><strong>Correção sugerida:</strong> documentar a política de arquivamento, seu destino, controle de acesso, evidência de transferência e critérios de descarte após o prazo legal. A rotina de anonimização não deve ser apresentada como arquivamento dos pedidos e pagamentos.</p><span class="finding-source">Fonte: PR01, página 28 · RN19, página 27 · DDL, procedures de anonimização e evento diário</span></div></article>
+          <article class="finding-card"><div class="finding-number">06</div><div><h3>Controles de infraestrutura e aplicação não são executados pelo DDL</h3><p>O script não configura backup criptografado/binlog (RNF06), TLS 1.3 e chaves AES-256 externas ao banco (RNF09), nem retries de deadlock pela aplicação (RNF11) e prepared statements (RNF12). São controles descritos nos requisitos, mas dependem de implantação e operação fora do esquema SQL.</p><p class="correction"><strong>Correção sugerida:</strong> manter esses itens em uma matriz de controles operacionais e não marcar como “testados pelo DDL”. Anexar evidências de configuração e testes quando o ambiente estiver disponível.</p><span class="finding-source">Fonte: RNF06, RNF09, RNF11 e RNF12, páginas 19–20</span></div></article>
+          <article class="finding-card"><div class="finding-number">07</div><div><h3>Histórico de revisões e textos de template</h3><p>A especificação já possui cinco registros no histórico de revisões (0.1, 0.2, 0.3, 1.0 e 1.1), acima do mínimo de três solicitado. Na extração textual de 40 páginas não foram encontrados colchetes de template, “COMO UTILIZAR ESTE MODELO” ou caixas “Orientação:”. A página 40 identifica um “Representante Simulado do iFood”, o que está explicitamente marcado como simulação acadêmica, não como assinatura real.</p><p class="correction"><strong>Correção sugerida:</strong> após aprovar os ajustes, registrar uma nova revisão (sugestão: versão 1.2, em 18/11/2026), sem substituir o histórico anterior. Confirmar se a banca deseja manter a identificação de representante simulado na página 40.</p><span class="finding-source">Fonte: histórico de revisões, página 2 · validação e aprovação, página 40</span></div></article>
+        </div>
+        <div class="publication-gate"><i class="fa-solid fa-lock"></i><div><strong>Bloqueio de publicação final</strong><p>Conforme o prompt, o dicionário não deve ser publicado como versão final antes das correções no documento de requisitos e no DER. O site local pode ser revisado e utilizado como prévia; o deploy público deve aguardar o alinhamento dos artefatos e a validação de execução do DDL.</p></div></div>
+      </section>
+
+      <footer class="site-footer"><div><strong>iFood · Grupo 2</strong><span>Fundação Santo André · 2026</span></div><p>Documento acadêmico baseado na Especificação de Requisitos v1.1 e no DDL fornecido. Não representa documentação interna oficial da iFood. Validação de execução do SQL permanece pendente.</p><a href="#inicio">Voltar ao topo <i class="fa-solid fa-arrow-up"></i></a></footer>
+    </main>
+  </div>
+
+  <!-- Modal DER -->
+  <div class="modal fade" id="derModal" tabindex="-1" aria-labelledby="derModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen"><div class="modal-content viewer-modal">
+      <div class="modal-header viewer-header"><div><div class="section-kicker">MODELO ENTIDADE-RELACIONAMENTO</div><h2 class="modal-title" id="derModalTitle">DER — Sistema iFood · Grupo 2</h2></div><div class="viewer-actions"><button class="btn btn-outline-secondary btn-sm" id="derZoomIn"><i class="fa-solid fa-plus"></i><span class="visually-hidden">Ampliar</span></button><button class="btn btn-outline-secondary btn-sm" id="derZoomOut"><i class="fa-solid fa-minus"></i><span class="visually-hidden">Reduzir</span></button><button class="btn btn-outline-secondary btn-sm" id="derReset"><i class="fa-solid fa-arrows-rotate"></i> Reset</button><button class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button></div></div>
+      <div class="modal-body der-stage" id="derStage"><div class="der-canvas"><img src="assets/der.png" id="derImage" alt="Diagrama Entidade-Relacionamento do Sistema de Gestão de Pedidos e Entregas iFood, Grupo 2"></div></div>
+      <div class="viewer-footer">Use a roda do mouse para aplicar zoom e arraste a imagem para navegar. Os botões de zoom e reset permanecem disponíveis no topo.</div>
+    </div></div>
+  </div>
+
+  <!-- Modal DDL: SQL original totalmente embutido para funcionar inclusive em file:// -->
+  <div class="modal fade" id="ddlModal" tabindex="-1" aria-labelledby="ddlModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen"><div class="modal-content ddl-viewer-modal">
+      <div class="modal-header viewer-header ddl-header"><div><div class="section-kicker">SCRIPT SQL ORIGINAL</div><h2 class="modal-title" id="ddlModalTitle">DDL — ifood_grupo2</h2><small>2424 linhas · 103,822 bytes · MySQL 8.0.36+</small></div><div class="viewer-actions"><button class="btn btn-danger btn-sm" id="copyDDL"><i class="fa-regular fa-copy me-2"></i>Copiar DDL</button><button class="btn btn-outline-secondary btn-sm" id="downloadDDL"><i class="fa-solid fa-download me-2"></i>Baixar SQL</button><button class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button></div></div>
+      <div class="modal-body ddl-scroll" id="ddlScroll"><pre class="line-numbers"><code id="ddlCode" class="language-sql">-- ============================================================================
+-- PROJETO: Sistema de Gestao de Pedidos e Entregas - iFood
+-- GRUPO: 2 - Fundacao Santo Andre
+-- SGBD alvo: MySQL 8.0.36 ou superior | InnoDB | utf8mb4
+-- Collation: utf8mb4_0900_ai_ci
+-- Fonte: Especificacao de Requisitos e Regras de Negocio, versao 1.1,
+--        principalmente secoes 1.3, 2, 3, 4, 5, 6.1, 6.2 e 6.3.
+-- Modelo: DER_iFood_Grupo2_Final.png
+--
+-- IMPORTANTE:
+-- 1) Executar em uma instancia MySQL 8.0.36+ com privilegios para criar
+--    database, tabelas, views, rotinas, triggers e eventos.
+-- 2) O DDL implementa as 22 entidades do modelo logico documentado.
+-- 3) Regras que dependem de varias tabelas devem usar as procedures indicadas
+--    neste arquivo; nao devem ser substituidas por gravacoes diretas da API.
+-- 4) A aplicacao deve definir as variaveis de sessao @app_id_usuario,
+--    @app_id_cliente, @app_id_entregador e @app_ip_origem antes de executar
+--    operacoes auditaveis. No maximo um ator pode estar definido por sessao.
+-- 5) CPF do cliente/entregador e armazenado cifrado + HMAC; a validacao do CPF
+--    em texto puro deve ocorrer antes da cifragem usando fn_valida_cpf().
+-- 6) Coordenadas: latitude/longitude em DECIMAL(9,6); dias da semana em
+--    horario_funcionamento: 1=segunda-feira ... 7=domingo.
+-- ============================================================================
+
+CREATE DATABASE IF NOT EXISTS ifood_grupo2
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_0900_ai_ci;
+USE ifood_grupo2;
+
+SET NAMES utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+SET SESSION time_zone = 'America/Sao_Paulo';
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+SET SESSION innodb_lock_wait_timeout = 5;
+SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_DATE,NO_ZERO_IN_DATE,ONLY_FULL_GROUP_BY';
+
+-- ============================================================================
+-- 1. TABELAS DE DOMINIO E CADASTRO
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS cidade (
+    id_cidade       INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    nome            VARCHAR(100) NOT NULL,
+    uf              CHAR(2) NOT NULL,
+    PRIMARY KEY (id_cidade),
+    CONSTRAINT uk_cidade_nome_uf UNIQUE (nome, uf),
+    CONSTRAINT chk_cidade_uf CHECK (CHAR_LENGTH(uf) = 2)
+) ENGINE=InnoDB COMMENT='Municipios usados nos enderecos e restaurantes';
+
+CREATE TABLE IF NOT EXISTS categoria_restaurante (
+    id_categoria_restaurante INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    nome                     VARCHAR(100) NOT NULL,
+    ativo                    TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    PRIMARY KEY (id_categoria_restaurante),
+    CONSTRAINT uk_categoria_restaurante_nome UNIQUE (nome),
+    CONSTRAINT chk_categoria_restaurante_ativo CHECK (ativo IN (0,1))
+) ENGINE=InnoDB COMMENT='Categorias dos estabelecimentos parceiros';
+
+CREATE TABLE IF NOT EXISTS forma_pagamento (
+    id_forma_pagamento       INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    nome                     VARCHAR(80) NOT NULL,
+    exige_pagamento_online   TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    ativo                    TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    PRIMARY KEY (id_forma_pagamento),
+    CONSTRAINT uk_forma_pagamento_nome UNIQUE (nome),
+    CONSTRAINT chk_forma_pagamento_online CHECK (exige_pagamento_online IN (0,1)),
+    CONSTRAINT chk_forma_pagamento_ativo CHECK (ativo IN (0,1))
+) ENGINE=InnoDB COMMENT='Formas de pagamento aceitas pela plataforma';
+
+CREATE TABLE IF NOT EXISTS cupom (
+    id_cupom                 INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    codigo                   VARCHAR(50) NOT NULL,
+    tipo_desconto            VARCHAR(20) NOT NULL,
+    valor_beneficio          DECIMAL(10,2) NOT NULL,
+    valor_pedido_minimo      DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    data_inicio              DATETIME NOT NULL,
+    data_fim                 DATETIME NOT NULL,
+    limite_uso_por_cliente  INT UNSIGNED NOT NULL,
+    ativo                    TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    PRIMARY KEY (id_cupom),
+    CONSTRAINT uk_cupom_codigo UNIQUE (codigo),
+    CONSTRAINT chk_cupom_tipo CHECK (tipo_desconto IN ('PERCENTUAL','VALOR_FIXO')),
+    CONSTRAINT chk_cupom_beneficio CHECK (
+        valor_beneficio &gt; 0 AND
+        (tipo_desconto = 'VALOR_FIXO' OR valor_beneficio &lt;= 100)
+    ),
+    CONSTRAINT chk_cupom_minimo CHECK (valor_pedido_minimo &gt;= 0),
+    CONSTRAINT chk_cupom_periodo CHECK (data_fim &gt;= data_inicio),
+    CONSTRAINT chk_cupom_limite CHECK (limite_uso_por_cliente &gt;= 1),
+    CONSTRAINT chk_cupom_ativo CHECK (ativo IN (0,1))
+) ENGINE=InnoDB COMMENT='Cupons promocionais';
+
+CREATE TABLE IF NOT EXISTS cliente (
+    id_cliente                   INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    nome                         VARCHAR(150) NOT NULL,
+    cpf_hash                     CHAR(64) NOT NULL,
+    cpf_cifrado                  VARBINARY(256) NULL,
+    email                        VARCHAR(255) NULL,
+    telefone_cifrado             VARBINARY(256) NULL,
+    data_nascimento              DATE NULL,
+    senha_hash                   VARCHAR(255) NOT NULL,
+    data_consentimento           DATETIME NOT NULL,
+    versao_termo_consentimento   VARCHAR(30) NOT NULL,
+    data_revogacao_consentimento DATETIME NULL,
+    data_anonimizacao            DATETIME NULL,
+    ativo                        TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    PRIMARY KEY (id_cliente),
+    CONSTRAINT uk_cliente_cpf_hash UNIQUE (cpf_hash),
+    CONSTRAINT uk_cliente_email UNIQUE (email),
+    CONSTRAINT chk_cliente_ativo CHECK (ativo IN (0,1)),
+    CONSTRAINT chk_cliente_anonimizacao CHECK (
+        data_anonimizacao IS NOT NULL OR
+        (cpf_cifrado IS NOT NULL AND email IS NOT NULL AND
+         telefone_cifrado IS NOT NULL AND data_nascimento IS NOT NULL)
+    ),
+    CONSTRAINT chk_cliente_revogacao CHECK (
+        data_revogacao_consentimento IS NULL OR
+        data_revogacao_consentimento &gt;= data_consentimento
+    ),
+    KEY idx_cliente_ativo (ativo)
+) ENGINE=InnoDB COMMENT='Consumidores cadastrados; CPF e telefone cifrados';
+
+CREATE TABLE IF NOT EXISTS entregador (
+    id_entregador       INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    nome                VARCHAR(150) NOT NULL,
+    cpf_hash            CHAR(64) NOT NULL,
+    cpf_cifrado         VARBINARY(256) NULL,
+    telefone_cifrado    VARBINARY(256) NULL,
+    tipo_veiculo        VARCHAR(20) NOT NULL,
+    senha_hash          VARCHAR(255) NOT NULL,
+    situacao            VARCHAR(20) NOT NULL DEFAULT 'DISPONIVEL',
+    data_anonimizacao   DATETIME NULL,
+    ativo               TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    PRIMARY KEY (id_entregador),
+    CONSTRAINT uk_entregador_cpf_hash UNIQUE (cpf_hash),
+    CONSTRAINT chk_entregador_veiculo CHECK (tipo_veiculo IN ('BICICLETA','MOTO','CARRO')),
+    CONSTRAINT chk_entregador_situacao CHECK (situacao IN ('DISPONIVEL','EM_ENTREGA','OFFLINE','BLOQUEADO')),
+    CONSTRAINT chk_entregador_ativo CHECK (ativo IN (0,1)),
+    CONSTRAINT chk_entregador_anonimizacao CHECK (
+        data_anonimizacao IS NOT NULL OR
+        (cpf_cifrado IS NOT NULL AND telefone_cifrado IS NOT NULL)
+    ),
+    KEY idx_entregador_situacao_ativo (situacao, ativo)
+) ENGINE=InnoDB COMMENT='Entregadores parceiros; CPF e telefone cifrados';
+
+-- ============================================================================
+-- 2. RESTAURANTES, USUARIOS E CARDAPIO
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS restaurante (
+    id_restaurante              INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_categoria_restaurante    INT UNSIGNED NOT NULL,
+    id_cidade                   INT UNSIGNED NOT NULL,
+    razao_social                VARCHAR(180) NOT NULL,
+    nome_fantasia               VARCHAR(150) NOT NULL,
+    cnpj                        CHAR(14) NOT NULL,
+    telefone                    VARCHAR(20) NOT NULL,
+    cep                         CHAR(8) NOT NULL,
+    logradouro                  VARCHAR(150) NOT NULL,
+    numero                      VARCHAR(20) NOT NULL,
+    complemento                 VARCHAR(100) NULL,
+    bairro                      VARCHAR(100) NOT NULL,
+    latitude                    DECIMAL(9,6) NOT NULL,
+    longitude                   DECIMAL(9,6) NOT NULL,
+    valor_pedido_minimo         DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    raio_entrega_km             DECIMAL(8,2) NOT NULL,
+    taxa_entrega_base           DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    taxa_entrega_por_km         DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    percentual_comissao         DECIMAL(5,2) NOT NULL DEFAULT 0.00,
+    situacao                    VARCHAR(20) NOT NULL DEFAULT 'FECHADO',
+    ativo                       TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    PRIMARY KEY (id_restaurante),
+    CONSTRAINT uk_restaurante_cnpj UNIQUE (cnpj),
+    CONSTRAINT fk_restaurante_categoria FOREIGN KEY (id_categoria_restaurante)
+        REFERENCES categoria_restaurante (id_categoria_restaurante)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_restaurante_cidade FOREIGN KEY (id_cidade)
+        REFERENCES cidade (id_cidade)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_restaurante_cnpj CHECK (cnpj REGEXP '^[0-9]{14}$'),
+    CONSTRAINT chk_restaurante_pedido_minimo CHECK (valor_pedido_minimo &gt;= 0),
+    CONSTRAINT chk_restaurante_raio CHECK (raio_entrega_km &gt; 0),
+    CONSTRAINT chk_restaurante_taxas CHECK (taxa_entrega_base &gt;= 0 AND taxa_entrega_por_km &gt;= 0),
+    CONSTRAINT chk_restaurante_comissao CHECK (percentual_comissao BETWEEN 0 AND 100),
+    CONSTRAINT chk_restaurante_situacao CHECK (situacao IN ('ABERTO','FECHADO','SUSPENSO')),
+    CONSTRAINT chk_restaurante_ativo CHECK (ativo IN (0,1)),
+    KEY idx_restaurante_cidade (id_cidade),
+    KEY idx_restaurante_situacao_ativo (situacao, ativo)
+) ENGINE=InnoDB COMMENT='Estabelecimentos parceiros';
+
+CREATE TABLE IF NOT EXISTS usuario (
+    id_usuario       INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_restaurante   INT UNSIGNED NULL,
+    nome             VARCHAR(150) NOT NULL,
+    login            VARCHAR(100) NOT NULL,
+    senha_hash       VARCHAR(255) NOT NULL,
+    perfil           VARCHAR(20) NOT NULL,
+    ativo            TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    PRIMARY KEY (id_usuario),
+    CONSTRAINT uk_usuario_login UNIQUE (login),
+    CONSTRAINT fk_usuario_restaurante FOREIGN KEY (id_restaurante)
+        REFERENCES restaurante (id_restaurante)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_usuario_perfil CHECK (perfil IN ('SUPORTE','GERENTE','ADMINISTRADOR','RESTAURANTE')),
+    CONSTRAINT chk_usuario_restaurante_perfil CHECK (
+        (perfil = 'RESTAURANTE' AND id_restaurante IS NOT NULL) OR
+        (perfil &lt;&gt; 'RESTAURANTE' AND id_restaurante IS NULL)
+    ),
+    CONSTRAINT chk_usuario_ativo CHECK (ativo IN (0,1)),
+    KEY idx_usuario_restaurante (id_restaurante)
+) ENGINE=InnoDB COMMENT='Usuarios internos e usuarios dos restaurantes parceiros';
+
+CREATE TABLE IF NOT EXISTS endereco_cliente (
+    id_endereco_cliente  INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_cliente           INT UNSIGNED NOT NULL,
+    id_cidade            INT UNSIGNED NOT NULL,
+    apelido              VARCHAR(60) NOT NULL,
+    logradouro           VARCHAR(150) NOT NULL,
+    numero               VARCHAR(20) NOT NULL,
+    complemento          VARCHAR(100) NULL,
+    bairro               VARCHAR(100) NOT NULL,
+    cep                  CHAR(8) NOT NULL,
+    latitude             DECIMAL(9,6) NOT NULL,
+    longitude            DECIMAL(9,6) NOT NULL,
+    principal            TINYINT UNSIGNED NOT NULL DEFAULT 0,
+    ativo                TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    id_cliente_principal_ativo INT UNSIGNED
+        GENERATED ALWAYS AS (CASE WHEN principal = 1 AND ativo = 1 THEN id_cliente ELSE NULL END) STORED,
+    PRIMARY KEY (id_endereco_cliente),
+    CONSTRAINT fk_endereco_cliente_cliente FOREIGN KEY (id_cliente)
+        REFERENCES cliente (id_cliente)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_endereco_cliente_cidade FOREIGN KEY (id_cidade)
+        REFERENCES cidade (id_cidade)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT uk_endereco_id_cliente UNIQUE (id_endereco_cliente, id_cliente),
+    CONSTRAINT uk_endereco_principal_ativo UNIQUE (id_cliente_principal_ativo),
+    CONSTRAINT chk_endereco_cep CHECK (cep REGEXP '^[0-9]{8}$'),
+    CONSTRAINT chk_endereco_principal CHECK (principal IN (0,1)),
+    CONSTRAINT chk_endereco_ativo CHECK (ativo IN (0,1)),
+    KEY idx_endereco_cliente (id_cliente),
+    KEY idx_endereco_cidade (id_cidade)
+) ENGINE=InnoDB COMMENT='Enderecos dos clientes; coluna gerada garante no maximo um principal ativo';
+
+CREATE TABLE IF NOT EXISTS horario_funcionamento (
+    id_horario_funcionamento INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_restaurante           INT UNSIGNED NOT NULL,
+    dia_semana               TINYINT UNSIGNED NOT NULL COMMENT '1=segunda-feira ... 7=domingo',
+    hora_abertura             TIME NOT NULL,
+    hora_fechamento            TIME NOT NULL,
+    PRIMARY KEY (id_horario_funcionamento),
+    CONSTRAINT fk_horario_restaurante FOREIGN KEY (id_restaurante)
+        REFERENCES restaurante (id_restaurante)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT uk_horario_restaurante_dia_abertura UNIQUE (id_restaurante, dia_semana, hora_abertura),
+    CONSTRAINT chk_horario_dia CHECK (dia_semana BETWEEN 1 AND 7),
+    CONSTRAINT chk_horario_intervalo CHECK (hora_abertura &lt; hora_fechamento),
+    KEY idx_horario_restaurante_dia (id_restaurante, dia_semana)
+) ENGINE=InnoDB COMMENT='Janelas de funcionamento; intervalos que cruzam meia-noite devem ser divididos';
+
+CREATE TABLE IF NOT EXISTS categoria_produto (
+    id_categoria_produto INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_restaurante       INT UNSIGNED NOT NULL,
+    nome                 VARCHAR(100) NOT NULL,
+    ativo                TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    PRIMARY KEY (id_categoria_produto),
+    CONSTRAINT fk_categoria_produto_restaurante FOREIGN KEY (id_restaurante)
+        REFERENCES restaurante (id_restaurante)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT uk_categoria_produto_id_rest UNIQUE (id_categoria_produto, id_restaurante),
+    CONSTRAINT uk_categoria_produto_nome UNIQUE (id_restaurante, nome),
+    CONSTRAINT chk_categoria_produto_ativo CHECK (ativo IN (0,1)),
+    KEY idx_categoria_produto_restaurante (id_restaurante)
+) ENGINE=InnoDB COMMENT='Secoes do cardapio vinculadas a um restaurante';
+
+DELIMITER $$
+
+CREATE TRIGGER trg_horario_funcionamento_bi
+BEFORE INSERT ON horario_funcionamento
+FOR EACH ROW
+BEGIN
+    DECLARE v_sobreposicao INT DEFAULT 0;
+    SELECT COUNT(*) INTO v_sobreposicao
+    FROM horario_funcionamento h
+    WHERE h.id_restaurante = NEW.id_restaurante
+      AND h.dia_semana = NEW.dia_semana
+      AND NEW.hora_abertura &lt; h.hora_fechamento
+      AND h.hora_abertura &lt; NEW.hora_fechamento;
+    IF v_sobreposicao &gt; 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Horario de funcionamento sobreposto no mesmo dia';
+    END IF;
+END$$
+
+CREATE TRIGGER trg_horario_funcionamento_bu
+BEFORE UPDATE ON horario_funcionamento
+FOR EACH ROW
+BEGIN
+    DECLARE v_sobreposicao INT DEFAULT 0;
+    SELECT COUNT(*) INTO v_sobreposicao
+    FROM horario_funcionamento h
+    WHERE h.id_restaurante = NEW.id_restaurante
+      AND h.dia_semana = NEW.dia_semana
+      AND h.id_horario_funcionamento &lt;&gt; OLD.id_horario_funcionamento
+      AND NEW.hora_abertura &lt; h.hora_fechamento
+      AND h.hora_abertura &lt; NEW.hora_fechamento;
+    IF v_sobreposicao &gt; 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Horario de funcionamento sobreposto no mesmo dia';
+    END IF;
+END$$
+
+DELIMITER ;
+
+CREATE TABLE IF NOT EXISTS produto (
+    id_produto            INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_restaurante        INT UNSIGNED NOT NULL,
+    id_categoria_produto  INT UNSIGNED NOT NULL,
+    nome                  VARCHAR(150) NOT NULL,
+    descricao             VARCHAR(500) NULL,
+    preco_tabela          DECIMAL(10,2) NOT NULL,
+    alcoolico             TINYINT UNSIGNED NOT NULL DEFAULT 0,
+    disponivel            TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    ativo                 TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    PRIMARY KEY (id_produto),
+    CONSTRAINT fk_produto_restaurante FOREIGN KEY (id_restaurante)
+        REFERENCES restaurante (id_restaurante)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_produto_categoria_restaurante FOREIGN KEY (id_categoria_produto, id_restaurante)
+        REFERENCES categoria_produto (id_categoria_produto, id_restaurante)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_produto_preco CHECK (preco_tabela &gt; 0),
+    CONSTRAINT chk_produto_alcoolico CHECK (alcoolico IN (0,1)),
+    CONSTRAINT chk_produto_disponivel CHECK (disponivel IN (0,1)),
+    CONSTRAINT chk_produto_ativo CHECK (ativo IN (0,1)),
+    KEY idx_produto_restaurante (id_restaurante),
+    KEY idx_produto_categoria_restaurante (id_categoria_produto, id_restaurante),
+    KEY idx_produto_disponibilidade (ativo, disponivel)
+) ENGINE=InnoDB COMMENT='Itens comercializados no cardapio';
+
+CREATE TABLE IF NOT EXISTS historico_preco (
+    id_historico_preco INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_produto         INT UNSIGNED NOT NULL,
+    id_usuario         INT UNSIGNED NOT NULL,
+    preco_anterior     DECIMAL(10,2) NOT NULL,
+    preco_novo         DECIMAL(10,2) NOT NULL,
+    data_alteracao     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_historico_preco),
+    CONSTRAINT fk_historico_preco_produto FOREIGN KEY (id_produto)
+        REFERENCES produto (id_produto)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_historico_preco_usuario FOREIGN KEY (id_usuario)
+        REFERENCES usuario (id_usuario)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_historico_preco_anterior CHECK (preco_anterior &gt; 0),
+    CONSTRAINT chk_historico_preco_novo CHECK (preco_novo &gt; 0),
+    KEY idx_historico_preco_produto (id_produto),
+    KEY idx_historico_preco_data (data_alteracao)
+) ENGINE=InnoDB COMMENT='Historico imutavel de alteracoes do preco de tabela';
+
+-- ============================================================================
+-- 3. PEDIDOS, ITENS, PAGAMENTOS E CICLO DE VIDA
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS pedido (
+    id_pedido                    INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_cliente                   INT UNSIGNED NOT NULL,
+    id_restaurante               INT UNSIGNED NOT NULL,
+    id_endereco_cliente          INT UNSIGNED NOT NULL,
+    id_cupom                     INT UNSIGNED NULL,
+    data_pedido                  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    situacao                     VARCHAR(20) NOT NULL DEFAULT 'CRIADO',
+    taxa_entrega                 DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    valor_desconto               DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    percentual_comissao_aplicado DECIMAL(5,2) NOT NULL DEFAULT 0.00,
+    motivo_cancelamento          VARCHAR(255) NULL,
+    origem_cancelamento          VARCHAR(20) NULL,
+    id_usuario_cancelamento      INT UNSIGNED NULL,
+    data_cancelamento            DATETIME NULL,
+    PRIMARY KEY (id_pedido),
+    CONSTRAINT fk_pedido_cliente FOREIGN KEY (id_cliente)
+        REFERENCES cliente (id_cliente)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_pedido_restaurante FOREIGN KEY (id_restaurante)
+        REFERENCES restaurante (id_restaurante)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_pedido_endereco_cliente FOREIGN KEY (id_endereco_cliente, id_cliente)
+        REFERENCES endereco_cliente (id_endereco_cliente, id_cliente)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_pedido_cupom FOREIGN KEY (id_cupom)
+        REFERENCES cupom (id_cupom)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_pedido_usuario_cancelamento FOREIGN KEY (id_usuario_cancelamento)
+        REFERENCES usuario (id_usuario)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_pedido_situacao CHECK (situacao IN ('CRIADO','CONFIRMADO','EM_PREPARO','PRONTO','EM_ROTA','ENTREGUE','CANCELADO')),
+    CONSTRAINT chk_pedido_taxa CHECK (taxa_entrega &gt;= 0),
+    CONSTRAINT chk_pedido_desconto CHECK (valor_desconto &gt;= 0),
+    CONSTRAINT chk_pedido_comissao CHECK (percentual_comissao_aplicado BETWEEN 0 AND 100),
+    CONSTRAINT chk_pedido_origem_cancelamento CHECK (
+        origem_cancelamento IS NULL OR origem_cancelamento IN ('CLIENTE','RESTAURANTE','SUPORTE','SISTEMA')
+    ),
+    CONSTRAINT chk_pedido_cancelamento_suporte CHECK (
+        origem_cancelamento &lt;&gt; 'SUPORTE' OR id_usuario_cancelamento IS NOT NULL
+    ),
+    KEY idx_pedido_data (data_pedido),
+    KEY idx_pedido_cliente (id_cliente),
+    KEY idx_pedido_restaurante (id_restaurante),
+    KEY idx_pedido_situacao (situacao),
+    KEY idx_pedido_cupom_cliente (id_cupom, id_cliente)
+) ENGINE=InnoDB COMMENT='Pedidos; subtotal, valor total e comissao sao calculados por views';
+
+CREATE TABLE IF NOT EXISTS item_pedido (
+    id_item_pedido        INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_pedido             INT UNSIGNED NOT NULL,
+    id_produto            INT UNSIGNED NOT NULL,
+    quantidade            INT UNSIGNED NOT NULL,
+    preco_unitario_venda  DECIMAL(10,2) NOT NULL,
+    observacao            VARCHAR(255) NULL,
+    PRIMARY KEY (id_item_pedido),
+    CONSTRAINT fk_item_pedido_pedido FOREIGN KEY (id_pedido)
+        REFERENCES pedido (id_pedido)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_item_pedido_produto FOREIGN KEY (id_produto)
+        REFERENCES produto (id_produto)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT uk_item_pedido_produto UNIQUE (id_pedido, id_produto),
+    CONSTRAINT chk_item_pedido_quantidade CHECK (quantidade &gt; 0),
+    CONSTRAINT chk_item_pedido_preco CHECK (preco_unitario_venda &gt; 0),
+    KEY idx_item_pedido_pedido (id_pedido),
+    KEY idx_item_pedido_produto (id_produto)
+) ENGINE=InnoDB COMMENT='Entidade associativa entre pedido e produto; conserva preco no momento da venda';
+
+CREATE TABLE IF NOT EXISTS pagamento (
+    id_pagamento             INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_pedido                INT UNSIGNED NOT NULL,
+    id_forma_pagamento       INT UNSIGNED NOT NULL,
+    valor                    DECIMAL(10,2) NOT NULL,
+    situacao                 VARCHAR(20) NOT NULL DEFAULT 'PENDENTE',
+    token_cartao             VARCHAR(512) NULL,
+    ultimos_digitos          CHAR(4) NULL,
+    codigo_transacao_gateway VARCHAR(150) NULL,
+    data_pagamento           DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_pagamento),
+    CONSTRAINT fk_pagamento_pedido FOREIGN KEY (id_pedido)
+        REFERENCES pedido (id_pedido)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_pagamento_forma FOREIGN KEY (id_forma_pagamento)
+        REFERENCES forma_pagamento (id_forma_pagamento)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_pagamento_valor CHECK (valor &gt; 0),
+    CONSTRAINT chk_pagamento_situacao CHECK (situacao IN ('PENDENTE','APROVADO','RECUSADO','ESTORNADO')),
+    CONSTRAINT chk_pagamento_ultimos_digitos CHECK (ultimos_digitos IS NULL OR ultimos_digitos REGEXP '^[0-9]{4}$'),
+    KEY idx_pagamento_pedido (id_pedido),
+    KEY idx_pagamento_forma (id_forma_pagamento)
+) ENGINE=InnoDB COMMENT='Registros de pagamento; nao armazena numero completo do cartao nem CVV';
+
+CREATE TABLE IF NOT EXISTS historico_status_pedido (
+    id_historico_status_pedido INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_pedido                  INT UNSIGNED NOT NULL,
+    id_usuario                 INT UNSIGNED NULL,
+    situacao_anterior          VARCHAR(20) NULL,
+    situacao_nova              VARCHAR(20) NOT NULL,
+    data_mudanca               DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_historico_status_pedido),
+    CONSTRAINT fk_historico_status_pedido FOREIGN KEY (id_pedido)
+        REFERENCES pedido (id_pedido)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_historico_status_usuario FOREIGN KEY (id_usuario)
+        REFERENCES usuario (id_usuario)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_historico_status_anterior CHECK (
+        situacao_anterior IS NULL OR situacao_anterior IN ('CRIADO','CONFIRMADO','EM_PREPARO','PRONTO','EM_ROTA','ENTREGUE','CANCELADO')
+    ),
+    CONSTRAINT chk_historico_status_nova CHECK (situacao_nova IN ('CRIADO','CONFIRMADO','EM_PREPARO','PRONTO','EM_ROTA','ENTREGUE','CANCELADO')),
+    KEY idx_historico_status_pedido (id_pedido),
+    KEY idx_historico_status_data (data_mudanca)
+) ENGINE=InnoDB COMMENT='Trilha de alteracoes do ciclo de vida do pedido';
+
+CREATE TABLE IF NOT EXISTS estorno (
+    id_estorno        INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_pagamento      INT UNSIGNED NOT NULL,
+    id_usuario        INT UNSIGNED NULL,
+    valor             DECIMAL(10,2) NOT NULL,
+    motivo            VARCHAR(255) NULL,
+    situacao          VARCHAR(20) NOT NULL DEFAULT 'SOLICITADO',
+    data_solicitacao  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    data_conclusao    DATETIME NULL,
+    PRIMARY KEY (id_estorno),
+    CONSTRAINT fk_estorno_pagamento FOREIGN KEY (id_pagamento)
+        REFERENCES pagamento (id_pagamento)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_estorno_usuario FOREIGN KEY (id_usuario)
+        REFERENCES usuario (id_usuario)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_estorno_valor CHECK (valor &gt; 0),
+    CONSTRAINT chk_estorno_situacao CHECK (situacao IN ('SOLICITADO','EM_ANALISE','APROVADO','CONCLUIDO','NEGADO')),
+    CONSTRAINT chk_estorno_datas CHECK (data_conclusao IS NULL OR data_conclusao &gt;= data_solicitacao),
+    KEY idx_estorno_pagamento (id_pagamento),
+    KEY idx_estorno_data (data_solicitacao)
+) ENGINE=InnoDB COMMENT='Estornos parciais ou integrais associados a pagamentos';
+
+CREATE TABLE IF NOT EXISTS entrega (
+    id_entrega             INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_pedido              INT UNSIGNED NOT NULL,
+    id_entregador          INT UNSIGNED NOT NULL,
+    data_atribuicao        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    data_coleta            DATETIME NULL,
+    data_entrega           DATETIME NULL,
+    distancia_km           DECIMAL(8,2) NULL,
+    maioridade_conferida   TINYINT UNSIGNED NOT NULL DEFAULT 0,
+    situacao               VARCHAR(20) NOT NULL DEFAULT 'ATRIBUIDA',
+    PRIMARY KEY (id_entrega),
+    CONSTRAINT uk_entrega_pedido UNIQUE (id_pedido),
+    CONSTRAINT fk_entrega_pedido FOREIGN KEY (id_pedido)
+        REFERENCES pedido (id_pedido)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_entrega_entregador FOREIGN KEY (id_entregador)
+        REFERENCES entregador (id_entregador)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_entrega_distancia CHECK (distancia_km IS NULL OR distancia_km &gt;= 0),
+    CONSTRAINT chk_entrega_maioridade CHECK (maioridade_conferida IN (0,1)),
+    CONSTRAINT chk_entrega_situacao CHECK (situacao IN ('ATRIBUIDA','COLETADA','CONCLUIDA','CANCELADA')),
+    KEY idx_entrega_entregador (id_entregador),
+    KEY idx_entrega_situacao (situacao)
+) ENGINE=InnoDB COMMENT='Execucao da entrega; no maximo uma entrega por pedido';
+
+CREATE TABLE IF NOT EXISTS avaliacao (
+    id_avaliacao       INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_pedido          INT UNSIGNED NOT NULL,
+    nota_restaurante   TINYINT UNSIGNED NOT NULL,
+    nota_entrega       TINYINT UNSIGNED NOT NULL,
+    comentario         VARCHAR(1000) NULL,
+    data_avaliacao     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_avaliacao),
+    CONSTRAINT uk_avaliacao_pedido UNIQUE (id_pedido),
+    CONSTRAINT fk_avaliacao_pedido FOREIGN KEY (id_pedido)
+        REFERENCES pedido (id_pedido)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_avaliacao_nota_restaurante CHECK (nota_restaurante BETWEEN 1 AND 5),
+    CONSTRAINT chk_avaliacao_nota_entrega CHECK (nota_entrega BETWEEN 1 AND 5),
+    KEY idx_avaliacao_data (data_avaliacao)
+) ENGINE=InnoDB COMMENT='Avaliacao unica por pedido entregue';
+
+-- ============================================================================
+-- 4. AUDITORIA E DIREITOS DO TITULAR (LGPD)
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS log_auditoria (
+    id_log_auditoria      BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_usuario            INT UNSIGNED NULL,
+    id_cliente            INT UNSIGNED NULL,
+    id_entregador         INT UNSIGNED NULL,
+    operacao              VARCHAR(20) NOT NULL,
+    tabela_afetada        VARCHAR(64) NOT NULL,
+    id_registro_afetado   BIGINT UNSIGNED NOT NULL,
+    valor_anterior        JSON NULL,
+    valor_novo            JSON NULL,
+    data_evento           DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ip_origem             VARCHAR(45) NOT NULL DEFAULT 'NAO_INFORMADO',
+    PRIMARY KEY (id_log_auditoria),
+    CONSTRAINT fk_log_auditoria_usuario FOREIGN KEY (id_usuario)
+        REFERENCES usuario (id_usuario)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_log_auditoria_cliente FOREIGN KEY (id_cliente)
+        REFERENCES cliente (id_cliente)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_log_auditoria_entregador FOREIGN KEY (id_entregador)
+        REFERENCES entregador (id_entregador)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_log_auditoria_operacao CHECK (operacao IN ('LOGIN','LOGOUT','LOGIN_FALHO','ACESSO_NEGADO','INSERT','UPDATE','DELETE_LOGICO')),
+    CONSTRAINT chk_log_auditoria_um_ator CHECK (
+        (id_usuario IS NOT NULL) + (id_cliente IS NOT NULL) + (id_entregador IS NOT NULL) &lt;= 1
+    ),
+    KEY idx_log_auditoria_data (data_evento),
+    KEY idx_log_auditoria_registro (id_registro_afetado),
+    KEY idx_log_auditoria_tabela_registro (tabela_afetada, id_registro_afetado)
+) ENGINE=InnoDB COMMENT='Log append-only; valores pessoais devem ser mascarados';
+
+CREATE TABLE IF NOT EXISTS solicitacao_titular (
+    id_solicitacao_titular INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_cliente             INT UNSIGNED NULL,
+    id_entregador          INT UNSIGNED NULL,
+    id_usuario             INT UNSIGNED NULL,
+    tipo                   VARCHAR(30) NOT NULL,
+    situacao               VARCHAR(20) NOT NULL DEFAULT 'ABERTA',
+    data_solicitacao       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    data_conclusao         DATETIME NULL,
+    PRIMARY KEY (id_solicitacao_titular),
+    CONSTRAINT fk_solicitacao_cliente FOREIGN KEY (id_cliente)
+        REFERENCES cliente (id_cliente)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_solicitacao_entregador FOREIGN KEY (id_entregador)
+        REFERENCES entregador (id_entregador)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_solicitacao_usuario FOREIGN KEY (id_usuario)
+        REFERENCES usuario (id_usuario)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_solicitacao_um_titular CHECK (
+        (id_cliente IS NOT NULL) + (id_entregador IS NOT NULL) = 1
+    ),
+    CONSTRAINT chk_solicitacao_tipo CHECK (tipo IN ('CONFIRMACAO','CORRECAO','EXPORTACAO','ANONIMIZACAO','REVOGACAO_CONSENTIMENTO')),
+    CONSTRAINT chk_solicitacao_situacao CHECK (situacao IN ('ABERTA','EM_ATENDIMENTO','CONCLUIDA','NEGADA')),
+    CONSTRAINT chk_solicitacao_datas CHECK (data_conclusao IS NULL OR data_conclusao &gt;= data_solicitacao),
+    KEY idx_solicitacao_cliente (id_cliente),
+    KEY idx_solicitacao_entregador (id_entregador),
+    KEY idx_solicitacao_situacao (situacao)
+) ENGINE=InnoDB COMMENT='Solicitacoes de direitos LGPD por clientes ou entregadores';
+
+-- ============================================================================
+-- 5. DADOS DE REFERENCIA INICIAIS
+-- ============================================================================
+
+INSERT INTO forma_pagamento (nome, exige_pagamento_online, ativo) VALUES
+ ('CARTAO_CREDITO', 1, 1),
+ ('CARTAO_DEBITO', 1, 1),
+ ('PIX', 1, 1),
+ ('VALE_REFEICAO_ALIMENTACAO', 1, 1),
+ ('PAGAMENTO_NA_ENTREGA', 0, 1)
+AS novo
+ON DUPLICATE KEY UPDATE
+ exige_pagamento_online = novo.exige_pagamento_online,
+ ativo = novo.ativo;
+
+-- ============================================================================
+-- 6. FUNCOES AUXILIARES
+-- ============================================================================
+
+DELIMITER $$
+
+CREATE FUNCTION fn_valida_cpf(p_cpf VARCHAR(11))
+RETURNS TINYINT
+DETERMINISTIC
+NO SQL
+BEGIN
+    DECLARE v_i INT DEFAULT 1;
+    DECLARE v_soma INT DEFAULT 0;
+    DECLARE v_d1 INT DEFAULT 0;
+    DECLARE v_d2 INT DEFAULT 0;
+    DECLARE v_resto INT DEFAULT 0;
+
+    IF p_cpf IS NULL OR p_cpf NOT REGEXP '^[0-9]{11}$' THEN
+        RETURN 0;
+    END IF;
+    IF p_cpf REGEXP '^([0-9])\\1{10}$' THEN
+        RETURN 0;
+    END IF;
+
+    SET v_i = 1;
+    WHILE v_i &lt;= 9 DO
+        SET v_soma = v_soma + CAST(SUBSTRING(p_cpf, v_i, 1) AS UNSIGNED) * (11 - v_i);
+        SET v_i = v_i + 1;
+    END WHILE;
+    SET v_resto = (v_soma * 10) MOD 11;
+    SET v_d1 = IF(v_resto = 10, 0, v_resto);
+    IF v_d1 &lt;&gt; CAST(SUBSTRING(p_cpf, 10, 1) AS UNSIGNED) THEN
+        RETURN 0;
+    END IF;
+
+    SET v_soma = 0;
+    SET v_i = 1;
+    WHILE v_i &lt;= 10 DO
+        SET v_soma = v_soma + CAST(SUBSTRING(p_cpf, v_i, 1) AS UNSIGNED) * (12 - v_i);
+        SET v_i = v_i + 1;
+    END WHILE;
+    SET v_resto = (v_soma * 10) MOD 11;
+    SET v_d2 = IF(v_resto = 10, 0, v_resto);
+    RETURN (v_d2 = CAST(SUBSTRING(p_cpf, 11, 1) AS UNSIGNED));
+END$$
+
+CREATE FUNCTION fn_valida_cnpj(p_cnpj VARCHAR(14))
+RETURNS TINYINT
+DETERMINISTIC
+NO SQL
+BEGIN
+    DECLARE v_i INT DEFAULT 1;
+    DECLARE v_soma INT DEFAULT 0;
+    DECLARE v_resto INT DEFAULT 0;
+    DECLARE v_d1 INT DEFAULT 0;
+    DECLARE v_d2 INT DEFAULT 0;
+    DECLARE v_peso INT DEFAULT 0;
+
+    IF p_cnpj IS NULL OR p_cnpj NOT REGEXP '^[0-9]{14}$' THEN
+        RETURN 0;
+    END IF;
+    IF p_cnpj REGEXP '^([0-9])\\1{13}$' THEN
+        RETURN 0;
+    END IF;
+
+    SET v_i = 1;
+    WHILE v_i &lt;= 12 DO
+        SET v_peso = IF(v_i &lt;= 4, 6 - v_i, 14 - v_i);
+        SET v_soma = v_soma + CAST(SUBSTRING(p_cnpj, v_i, 1) AS UNSIGNED) * v_peso;
+        SET v_i = v_i + 1;
+    END WHILE;
+    SET v_resto = v_soma MOD 11;
+    SET v_d1 = IF(v_resto &lt; 2, 0, 11 - v_resto);
+    IF v_d1 &lt;&gt; CAST(SUBSTRING(p_cnpj, 13, 1) AS UNSIGNED) THEN
+        RETURN 0;
+    END IF;
+
+    SET v_soma = 0;
+    SET v_i = 1;
+    WHILE v_i &lt;= 13 DO
+        SET v_peso = IF(v_i &lt;= 5, 7 - v_i, 15 - v_i);
+        SET v_soma = v_soma + CAST(SUBSTRING(p_cnpj, v_i, 1) AS UNSIGNED) * v_peso;
+        SET v_i = v_i + 1;
+    END WHILE;
+    SET v_resto = v_soma MOD 11;
+    SET v_d2 = IF(v_resto &lt; 2, 0, 11 - v_resto);
+    RETURN (v_d2 = CAST(SUBSTRING(p_cnpj, 14, 1) AS UNSIGNED));
+END$$
+
+CREATE FUNCTION fn_distancia_km(
+    p_lat1 DECIMAL(9,6), p_lon1 DECIMAL(9,6),
+    p_lat2 DECIMAL(9,6), p_lon2 DECIMAL(9,6)
+)
+RETURNS DECIMAL(10,3)
+DETERMINISTIC
+NO SQL
+BEGIN
+    RETURN ROUND(
+        ST_Distance_Sphere(POINT(p_lon1, p_lat1), POINT(p_lon2, p_lat2)) / 1000,
+        3
+    );
+END$$
+
+-- ============================================================================
+-- 7. VIEWS OBRIGATORIAS
+-- ============================================================================
+
+CREATE OR REPLACE VIEW vw_pedido_totais AS
+SELECT
+    p.id_pedido,
+    p.id_cliente,
+    p.id_restaurante,
+    p.data_pedido,
+    p.situacao,
+    COALESCE(i.subtotal, 0.00) AS subtotal,
+    p.taxa_entrega,
+    p.valor_desconto,
+    ROUND(COALESCE(i.subtotal, 0.00) + p.taxa_entrega - p.valor_desconto, 2) AS valor_total,
+    p.percentual_comissao_aplicado,
+    ROUND(COALESCE(i.subtotal, 0.00) * p.percentual_comissao_aplicado / 100, 2) AS valor_comissao
+FROM pedido p
+LEFT JOIN (
+    SELECT id_pedido, SUM(quantidade * preco_unitario_venda) AS subtotal
+    FROM item_pedido
+    GROUP BY id_pedido
+) i ON i.id_pedido = p.id_pedido$$
+
+CREATE OR REPLACE VIEW vw_comprovante_pedido AS
+SELECT
+    p.id_pedido,
+    p.data_pedido,
+    p.situacao,
+    c.id_cliente,
+    c.nome AS nome_cliente,
+    r.id_restaurante,
+    r.nome_fantasia AS restaurante,
+    pr.id_produto,
+    pr.nome AS produto,
+    ip.quantidade,
+    ip.preco_unitario_venda,
+    ROUND(ip.quantidade * ip.preco_unitario_venda, 2) AS subtotal_item,
+    ip.observacao,
+    v.subtotal,
+    p.taxa_entrega,
+    p.valor_desconto,
+    v.valor_total
+FROM pedido p
+JOIN cliente c ON c.id_cliente = p.id_cliente
+JOIN restaurante r ON r.id_restaurante = p.id_restaurante
+JOIN item_pedido ip ON ip.id_pedido = p.id_pedido
+JOIN produto pr ON pr.id_produto = ip.id_produto
+JOIN vw_pedido_totais v ON v.id_pedido = p.id_pedido$$
+
+CREATE OR REPLACE VIEW vw_conferencia_pagamento AS
+SELECT
+    v.id_pedido,
+    v.valor_total,
+    COALESCE(SUM(CASE WHEN pg.situacao = 'APROVADO' THEN pg.valor ELSE 0 END), 0.00) AS total_aprovado,
+    COALESCE(SUM(CASE WHEN pg.situacao = 'PENDENTE' THEN pg.valor ELSE 0 END), 0.00) AS total_pendente,
+    COALESCE(SUM(CASE WHEN pg.situacao IN ('APROVADO','PENDENTE') THEN pg.valor ELSE 0 END), 0.00) AS total_aprovado_mais_pendente,
+    COALESCE(SUM(CASE WHEN fp.exige_pagamento_online = 0 THEN 1 ELSE 0 END), 0) AS quantidade_pagamentos_na_entrega,
+    CASE
+      WHEN COALESCE(SUM(CASE WHEN fp.exige_pagamento_online = 0 THEN 1 ELSE 0 END), 0) &gt; 0
+       AND COALESCE(SUM(CASE WHEN pg.situacao IN ('APROVADO','PENDENTE') THEN pg.valor ELSE 0 END), 0.00) = v.valor_total
+        THEN 'COMPATIVEL_PENDENTE_OU_APROVADO'
+      WHEN COALESCE(SUM(CASE WHEN fp.exige_pagamento_online = 1 AND pg.situacao = 'APROVADO' THEN pg.valor ELSE 0 END), 0.00) = v.valor_total
+        THEN 'APROVADO'
+      ELSE 'DIVERGENTE'
+    END AS resultado_conferencia
+FROM vw_pedido_totais v
+LEFT JOIN pagamento pg ON pg.id_pedido = v.id_pedido
+LEFT JOIN forma_pagamento fp ON fp.id_forma_pagamento = pg.id_forma_pagamento
+GROUP BY v.id_pedido, v.valor_total$$
+
+CREATE OR REPLACE VIEW vw_media_avaliacao AS
+SELECT
+    'RESTAURANTE' AS tipo_avaliado,
+    p.id_restaurante AS id_avaliado,
+    ROUND(AVG(a.nota_restaurante), 2) AS media_avaliacao,
+    COUNT(*) AS quantidade_avaliacoes
+FROM avaliacao a
+JOIN pedido p ON p.id_pedido = a.id_pedido
+GROUP BY p.id_restaurante
+UNION ALL
+SELECT
+    'ENTREGADOR' AS tipo_avaliado,
+    e.id_entregador AS id_avaliado,
+    ROUND(AVG(a.nota_entrega), 2) AS media_avaliacao,
+    COUNT(*) AS quantidade_avaliacoes
+FROM avaliacao a
+JOIN entrega e ON e.id_pedido = a.id_pedido
+GROUP BY e.id_entregador$$
+
+CREATE OR REPLACE VIEW vw_repasse_restaurante AS
+SELECT
+    v.id_restaurante,
+    DATE(v.data_pedido) AS data_referencia,
+    COUNT(*) AS quantidade_pedidos,
+    ROUND(SUM(v.subtotal), 2) AS total_subtotal,
+    ROUND(SUM(v.valor_comissao), 2) AS total_comissao,
+    ROUND(SUM(COALESCE(est.total_estornado, 0.00)), 2) AS total_estornos_concluidos,
+    ROUND(SUM(v.subtotal - v.valor_comissao - COALESCE(est.total_estornado, 0.00)), 2) AS valor_repasse
+FROM vw_pedido_totais v
+LEFT JOIN (
+    SELECT pg.id_pedido, SUM(es.valor) AS total_estornado
+    FROM pagamento pg
+    JOIN estorno es ON es.id_pagamento = pg.id_pagamento
+    WHERE es.situacao = 'CONCLUIDO'
+    GROUP BY pg.id_pedido
+) est ON est.id_pedido = v.id_pedido
+WHERE v.situacao &lt;&gt; 'CANCELADO'
+GROUP BY v.id_restaurante, DATE(v.data_pedido)$$
+
+-- ============================================================================
+-- 8. PROCEDURE DE AUDITORIA
+-- A aplicacao configura as variaveis de sessao do ator e do IP antes das DML.
+-- ============================================================================
+
+CREATE PROCEDURE sp_registrar_auditoria(
+    IN p_operacao VARCHAR(20),
+    IN p_tabela VARCHAR(64),
+    IN p_id_registro BIGINT UNSIGNED,
+    IN p_valor_anterior JSON,
+    IN p_valor_novo JSON
+)
+SQL SECURITY DEFINER
+MODIFIES SQL DATA
+BEGIN
+    DECLARE v_id_usuario INT UNSIGNED DEFAULT NULL;
+    DECLARE v_id_cliente INT UNSIGNED DEFAULT NULL;
+    DECLARE v_id_entregador INT UNSIGNED DEFAULT NULL;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        SET @permitir_log_auditoria = NULL;
+        RESIGNAL;
+    END;
+
+    SET v_id_usuario = @app_id_usuario;
+    SET v_id_cliente = @app_id_cliente;
+    SET v_id_entregador = @app_id_entregador;
+
+    IF (v_id_usuario IS NOT NULL) + (v_id_cliente IS NOT NULL) + (v_id_entregador IS NOT NULL) &gt; 1 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Defina apenas um ator de auditoria por sessao';
+    END IF;
+
+    SET @permitir_log_auditoria = 1;
+    INSERT INTO log_auditoria (
+        id_usuario, id_cliente, id_entregador, operacao, tabela_afetada,
+        id_registro_afetado, valor_anterior, valor_novo, data_evento, ip_origem
+    ) VALUES (
+        v_id_usuario, v_id_cliente, v_id_entregador, p_operacao, p_tabela,
+        p_id_registro, p_valor_anterior, p_valor_novo, CURRENT_TIMESTAMP,
+        COALESCE(@app_ip_origem, 'NAO_INFORMADO')
+    );
+    SET @permitir_log_auditoria = NULL;
+END$$
+
+-- ============================================================================
+-- 9. PROCEDURE TRANSACIONAL DE CONFIRMACAO DO PEDIDO
+-- Fluxo: START TRANSACTION; inserir pedido/itens/pagamentos; chamar a procedure; COMMIT.
+-- Em SQLEXCEPTION, a procedure executa ROLLBACK e propaga o erro.
+-- ============================================================================
+
+CREATE PROCEDURE sp_confirmar_pedido(IN p_id_pedido INT UNSIGNED)
+SQL SECURITY DEFINER
+MODIFIES SQL DATA
+main: BEGIN
+    DECLARE v_id_cliente INT UNSIGNED;
+    DECLARE v_id_restaurante INT UNSIGNED;
+    DECLARE v_id_endereco INT UNSIGNED;
+    DECLARE v_id_cupom INT UNSIGNED;
+    DECLARE v_situacao_pedido VARCHAR(20);
+    DECLARE v_cliente_ativo TINYINT UNSIGNED;
+    DECLARE v_data_revogacao DATETIME;
+    DECLARE v_data_nascimento DATE;
+    DECLARE v_restaurante_ativo TINYINT UNSIGNED;
+    DECLARE v_restaurante_situacao VARCHAR(20);
+    DECLARE v_valor_minimo DECIMAL(10,2);
+    DECLARE v_raio DECIMAL(8,2);
+    DECLARE v_taxa_base DECIMAL(10,2);
+    DECLARE v_taxa_km DECIMAL(10,2);
+    DECLARE v_comissao DECIMAL(5,2);
+    DECLARE v_lat_rest DECIMAL(9,6);
+    DECLARE v_lon_rest DECIMAL(9,6);
+    DECLARE v_lat_end DECIMAL(9,6);
+    DECLARE v_lon_end DECIMAL(9,6);
+    DECLARE v_distancia DECIMAL(10,3);
+    DECLARE v_subtotal DECIMAL(12,2) DEFAULT 0.00;
+    DECLARE v_taxa DECIMAL(10,2) DEFAULT 0.00;
+    DECLARE v_desconto DECIMAL(10,2) DEFAULT 0.00;
+    DECLARE v_total DECIMAL(12,2) DEFAULT 0.00;
+    DECLARE v_tipo_desconto VARCHAR(20);
+    DECLARE v_valor_beneficio DECIMAL(10,2);
+    DECLARE v_minimo_cupom DECIMAL(10,2);
+    DECLARE v_inicio_cupom DATETIME;
+    DECLARE v_fim_cupom DATETIME;
+    DECLARE v_limite_cupom INT UNSIGNED;
+    DECLARE v_cupom_ativo TINYINT UNSIGNED;
+    DECLARE v_usos_cupom INT UNSIGNED DEFAULT 0;
+    DECLARE v_total_aprovado DECIMAL(12,2) DEFAULT 0.00;
+    DECLARE v_total_pendente DECIMAL(12,2) DEFAULT 0.00;
+    DECLARE v_pagamentos_offline INT DEFAULT 0;
+    DECLARE v_tem_alcool TINYINT DEFAULT 0;
+    DECLARE v_hora_ok INT DEFAULT 0;
+    DECLARE v_total_pagamentos INT DEFAULT 0;
+    DECLARE v_itens_invalidos INT DEFAULT 0;
+    DECLARE v_id_pagamento_bloqueado INT UNSIGNED DEFAULT NULL;
+    DECLARE v_ultimo_pagamento INT UNSIGNED DEFAULT 0;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        SET @permitir_confirmacao = NULL;
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    IF @@in_transaction = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Inicie uma transacao antes de criar e confirmar o pedido';
+    END IF;
+
+    SELECT id_cliente, id_restaurante, id_endereco_cliente, id_cupom, situacao
+      INTO v_id_cliente, v_id_restaurante, v_id_endereco, v_id_cupom, v_situacao_pedido
+    FROM pedido
+    WHERE id_pedido = p_id_pedido
+    FOR UPDATE;
+
+    IF v_id_cliente IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pedido nao encontrado';
+    END IF;
+    IF @app_id_cliente IS NOT NULL AND @app_id_cliente &lt;&gt; v_id_cliente THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cliente autenticado so pode confirmar pedido proprio';
+    END IF;
+    IF v_situacao_pedido &lt;&gt; 'CRIADO' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Somente pedidos em CRIADO podem ser confirmados';
+    END IF;
+
+    SELECT ativo, data_revogacao_consentimento, data_nascimento
+      INTO v_cliente_ativo, v_data_revogacao, v_data_nascimento
+    FROM cliente
+    WHERE id_cliente = v_id_cliente
+    FOR UPDATE;
+
+    IF v_cliente_ativo &lt;&gt; 1 OR v_data_revogacao IS NOT NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cliente inativo ou com consentimento revogado';
+    END IF;
+
+    SELECT ativo, situacao, valor_pedido_minimo, raio_entrega_km,
+           taxa_entrega_base, taxa_entrega_por_km, percentual_comissao,
+           latitude, longitude
+      INTO v_restaurante_ativo, v_restaurante_situacao, v_valor_minimo, v_raio,
+           v_taxa_base, v_taxa_km, v_comissao, v_lat_rest, v_lon_rest
+    FROM restaurante
+    WHERE id_restaurante = v_id_restaurante
+    FOR UPDATE;
+
+    IF v_restaurante_ativo &lt;&gt; 1 OR v_restaurante_situacao &lt;&gt; 'ABERTO' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Restaurante inativo, suspenso ou fechado';
+    END IF;
+
+    SELECT latitude, longitude
+      INTO v_lat_end, v_lon_end
+    FROM endereco_cliente
+    WHERE id_endereco_cliente = v_id_endereco AND id_cliente = v_id_cliente AND ativo = 1
+    FOR UPDATE;
+
+    SET v_distancia = fn_distancia_km(v_lat_rest, v_lon_rest, v_lat_end, v_lon_end);
+    IF v_distancia IS NULL OR v_distancia &gt; v_raio THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Endereco fora da area de entrega do restaurante';
+    END IF;
+
+    SELECT COUNT(*) INTO v_hora_ok
+    FROM horario_funcionamento
+    WHERE id_restaurante = v_id_restaurante
+      AND dia_semana = WEEKDAY(CURRENT_TIMESTAMP) + 1
+      AND CURTIME() &gt;= hora_abertura
+      AND CURTIME() &lt; hora_fechamento;
+    IF v_hora_ok = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Restaurante fora do horario de funcionamento';
+    END IF;
+
+    SELECT COALESCE(SUM(quantidade * preco_unitario_venda), 0.00)
+      INTO v_subtotal
+    FROM item_pedido
+    WHERE id_pedido = p_id_pedido;
+    IF v_subtotal &lt;= 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pedido precisa conter ao menos um item';
+    END IF;
+    IF v_subtotal &lt; v_valor_minimo THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Subtotal inferior ao pedido minimo do restaurante';
+    END IF;
+
+    SELECT COUNT(*) INTO v_itens_invalidos
+    FROM item_pedido ip
+    JOIN produto pr ON pr.id_produto = ip.id_produto
+    WHERE ip.id_pedido = p_id_pedido
+      AND (pr.id_restaurante &lt;&gt; v_id_restaurante OR pr.ativo &lt;&gt; 1 OR pr.disponivel &lt;&gt; 1);
+    IF v_itens_invalidos &gt; 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pedido contem produto de outro restaurante, inativo ou indisponivel';
+    END IF;
+
+    SELECT EXISTS(
+        SELECT 1 FROM item_pedido ip
+        JOIN produto pr ON pr.id_produto = ip.id_produto
+        WHERE ip.id_pedido = p_id_pedido AND pr.alcoolico = 1
+    ) INTO v_tem_alcool;
+    IF v_tem_alcool = 1 AND (v_data_nascimento IS NULL OR TIMESTAMPDIFF(YEAR, v_data_nascimento, CURDATE()) &lt; 18) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pedido com bebida alcoolica exige cliente maior de 18 anos';
+    END IF;
+
+    SET v_taxa = ROUND(v_taxa_base + (v_taxa_km * v_distancia), 2);
+
+    IF v_id_cupom IS NOT NULL THEN
+        SELECT tipo_desconto, valor_beneficio, valor_pedido_minimo,
+               data_inicio, data_fim, limite_uso_por_cliente, ativo
+          INTO v_tipo_desconto, v_valor_beneficio, v_minimo_cupom,
+               v_inicio_cupom, v_fim_cupom, v_limite_cupom, v_cupom_ativo
+        FROM cupom
+        WHERE id_cupom = v_id_cupom
+        FOR UPDATE;
+
+        IF v_cupom_ativo &lt;&gt; 1 OR CURRENT_TIMESTAMP NOT BETWEEN v_inicio_cupom AND v_fim_cupom THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cupom inativo ou fora do periodo de vigencia';
+        END IF;
+        IF v_subtotal &lt; v_minimo_cupom THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Subtotal nao atinge o minimo exigido pelo cupom';
+        END IF;
+
+        SELECT COUNT(*) INTO v_usos_cupom
+        FROM pedido
+        WHERE id_cliente = v_id_cliente
+          AND id_cupom = v_id_cupom
+          AND situacao &lt;&gt; 'CANCELADO'
+          AND id_pedido &lt;&gt; p_id_pedido;
+        IF v_usos_cupom &gt;= v_limite_cupom THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Limite de uso do cupom atingido para este cliente';
+        END IF;
+
+        SET v_desconto = CASE
+            WHEN v_tipo_desconto = 'PERCENTUAL' THEN ROUND(v_subtotal * v_valor_beneficio / 100, 2)
+            ELSE v_valor_beneficio
+        END;
+        SET v_desconto = LEAST(v_desconto, v_subtotal);
+    ELSE
+        SET v_desconto = 0.00;
+    END IF;
+
+    SET v_total = ROUND(v_subtotal + v_taxa - v_desconto, 2);
+
+    -- Bloqueia cada pagamento existente com leitura bloqueante real (FOR UPDATE).
+    -- A busca incremental evita depender de cursor materializado para reter locks.
+    SET v_ultimo_pagamento = 0;
+    bloqueia_pagamentos: LOOP
+        SET v_id_pagamento_bloqueado = NULL;
+        BEGIN
+            DECLARE CONTINUE HANDLER FOR NOT FOUND
+                SET v_id_pagamento_bloqueado = NULL;
+            SELECT pg.id_pagamento
+              INTO v_id_pagamento_bloqueado
+            FROM pagamento pg
+            WHERE pg.id_pedido = p_id_pedido
+              AND pg.id_pagamento &gt; v_ultimo_pagamento
+            ORDER BY pg.id_pagamento
+            LIMIT 1
+            FOR UPDATE;
+        END;
+
+        IF v_id_pagamento_bloqueado IS NULL THEN
+            LEAVE bloqueia_pagamentos;
+        END IF;
+        SET v_ultimo_pagamento = v_id_pagamento_bloqueado;
+    END LOOP;
+
+    SELECT COUNT(*),
+           COALESCE(SUM(CASE WHEN pg.situacao = 'APROVADO' THEN pg.valor ELSE 0 END), 0.00),
+           COALESCE(SUM(CASE WHEN pg.situacao = 'PENDENTE' THEN pg.valor ELSE 0 END), 0.00),
+           COALESCE(SUM(CASE WHEN fp.exige_pagamento_online = 0 THEN 1 ELSE 0 END), 0)
+      INTO v_total_pagamentos, v_total_aprovado, v_total_pendente, v_pagamentos_offline
+    FROM pagamento pg
+    JOIN forma_pagamento fp ON fp.id_forma_pagamento = pg.id_forma_pagamento
+    WHERE pg.id_pedido = p_id_pedido;
+
+    IF v_total_pagamentos = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pedido precisa ter ao menos um registro de pagamento';
+    END IF;
+    IF v_pagamentos_offline &gt; 0 THEN
+        IF ROUND(v_total_aprovado + v_total_pendente, 2) &lt;&gt; v_total THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pagamentos aprovados e pendentes devem totalizar o pedido';
+        END IF;
+    ELSE
+        IF ROUND(v_total_aprovado, 2) &lt;&gt; v_total THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pagamentos online aprovados devem totalizar o pedido';
+        END IF;
+    END IF;
+
+    SET @permitir_confirmacao = 1;
+    UPDATE pedido
+       SET situacao = 'CONFIRMADO',
+           taxa_entrega = v_taxa,
+           valor_desconto = v_desconto,
+           percentual_comissao_aplicado = v_comissao
+     WHERE id_pedido = p_id_pedido;
+    SET @permitir_confirmacao = NULL;
+END$$
+
+-- Atualizacao de estado da entrega com recalculo transacional do entregador.
+-- Executar para COLETADA, CONCLUIDA ou CANCELADA.
+CREATE PROCEDURE sp_atualizar_entrega(
+    IN p_id_entrega INT UNSIGNED,
+    IN p_nova_situacao VARCHAR(20),
+    IN p_distancia_km DECIMAL(8,2),
+    IN p_maioridade_conferida TINYINT UNSIGNED
+)
+SQL SECURITY DEFINER
+MODIFIES SQL DATA
+BEGIN
+    DECLARE v_id_entregador INT UNSIGNED;
+    DECLARE v_entregas_abertas INT DEFAULT 0;
+    DECLARE v_ativo TINYINT UNSIGNED;
+    DECLARE v_situacao_entregador VARCHAR(20);
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        SET @permitir_atualizacao_entrega = NULL;
+        SET @permitir_entrega = NULL;
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    IF p_nova_situacao NOT IN ('COLETADA','CONCLUIDA','CANCELADA') THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Situacao solicitada para entrega invalida';
+    END IF;
+
+    START TRANSACTION;
+    SELECT id_entregador INTO v_id_entregador
+    FROM entrega WHERE id_entrega = p_id_entrega FOR UPDATE;
+    IF v_id_entregador IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Entrega nao encontrada';
+    END IF;
+
+    SET @permitir_atualizacao_entrega = 1;
+    UPDATE entrega
+       SET situacao = p_nova_situacao,
+           distancia_km = COALESCE(p_distancia_km, distancia_km),
+           maioridade_conferida = COALESCE(p_maioridade_conferida, maioridade_conferida)
+     WHERE id_entrega = p_id_entrega;
+    SET @permitir_atualizacao_entrega = NULL;
+    SET @permitir_entrega = NULL;
+
+    SELECT COUNT(*) INTO v_entregas_abertas
+    FROM entrega
+    WHERE id_entregador = v_id_entregador AND situacao IN ('ATRIBUIDA','COLETADA');
+    SELECT ativo, situacao INTO v_ativo, v_situacao_entregador
+    FROM entregador WHERE id_entregador = v_id_entregador FOR UPDATE;
+
+    UPDATE entregador
+       SET situacao = CASE
+           WHEN v_ativo = 0 OR v_situacao_entregador = 'BLOQUEADO' THEN 'BLOQUEADO'
+           WHEN v_entregas_abertas &gt; 0 THEN 'EM_ENTREGA'
+           ELSE 'DISPONIVEL' END
+     WHERE id_entregador = v_id_entregador;
+
+    COMMIT;
+END$$
+
+-- Solicita estorno por direito de arrependimento para pedido ja entregue.
+-- A data limite e calculada a partir de entrega.data_entrega (7 dias).
+CREATE PROCEDURE sp_solicitar_estorno(
+    IN p_id_pagamento INT UNSIGNED,
+    IN p_id_usuario INT UNSIGNED,
+    IN p_valor DECIMAL(10,2),
+    IN p_motivo VARCHAR(255)
+)
+SQL SECURITY DEFINER
+MODIFIES SQL DATA
+BEGIN
+    DECLARE v_id_pedido INT UNSIGNED;
+    DECLARE v_situacao_pedido VARCHAR(20);
+    DECLARE v_data_entrega DATETIME;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        SET @permitir_estorno = NULL;
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    START TRANSACTION;
+    SELECT id_pedido INTO v_id_pedido
+    FROM pagamento WHERE id_pagamento = p_id_pagamento FOR UPDATE;
+    IF v_id_pedido IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pagamento nao encontrado';
+    END IF;
+
+    SELECT situacao INTO v_situacao_pedido
+    FROM pedido WHERE id_pedido = v_id_pedido;
+    IF v_situacao_pedido &lt;&gt; 'ENTREGUE' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Estorno por arrependimento aplica-se a pedido ENTREGUE';
+    END IF;
+
+    SELECT data_entrega INTO v_data_entrega
+    FROM entrega WHERE id_pedido = v_id_pedido;
+    IF v_data_entrega IS NULL OR CURRENT_TIMESTAMP &gt; v_data_entrega + INTERVAL 7 DAY THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Prazo de 7 dias para arrependimento expirado';
+    END IF;
+
+    SET @permitir_estorno = 1;
+    INSERT INTO estorno (id_pagamento, id_usuario, valor, motivo, situacao, data_solicitacao)
+    VALUES (p_id_pagamento, p_id_usuario, p_valor, p_motivo, 'SOLICITADO', CURRENT_TIMESTAMP);
+    SET @permitir_estorno = NULL;
+
+    COMMIT;
+END$$
+
+-- ============================================================================
+-- 10. PROCEDURE DE ANONIMIZACAO E EVENTO DE RETENCAO
+-- p_tipo_titular: 'CLIENTE' ou 'ENTREGADOR'
+-- ============================================================================
+
+CREATE PROCEDURE sp_anonimizar_titular(
+    IN p_tipo_titular VARCHAR(20),
+    IN p_id_titular INT UNSIGNED
+)
+SQL SECURITY DEFINER
+MODIFIES SQL DATA
+BEGIN
+    DECLARE v_ativo INT DEFAULT 0;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    START TRANSACTION;
+
+    IF p_tipo_titular = 'CLIENTE' THEN
+        SELECT ativo INTO v_ativo FROM cliente WHERE id_cliente = p_id_titular FOR UPDATE;
+        IF v_ativo = 0 THEN
+            -- Permite anonimizar titular previamente inativo, desde que ainda nao anonimizado.
+            IF EXISTS (SELECT 1 FROM cliente WHERE id_cliente = p_id_titular AND data_anonimizacao IS NOT NULL) THEN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cliente ja foi anonimizado';
+            END IF;
+        END IF;
+
+        UPDATE endereco_cliente
+           SET apelido = 'ANONIMIZADO',
+               logradouro = 'ANONIMIZADO',
+               numero = '0',
+               complemento = NULL,
+               bairro = 'ANONIMIZADO',
+               cep = '00000000',
+               latitude = 0.000000,
+               longitude = 0.000000,
+               principal = 0,
+               ativo = 0
+         WHERE id_cliente = p_id_titular;
+
+        UPDATE cliente
+           SET nome = 'TITULAR ANONIMIZADO',
+               cpf_hash = SHA2(CONCAT(UUID(), RAND(), id_cliente), 256),
+               cpf_cifrado = NULL,
+               email = NULL,
+               telefone_cifrado = NULL,
+               data_nascimento = NULL,
+               senha_hash = SHA2(CONCAT(UUID(), RAND()), 256),
+               data_anonimizacao = CURRENT_TIMESTAMP,
+               ativo = 0
+         WHERE id_cliente = p_id_titular AND data_anonimizacao IS NULL;
+
+        IF ROW_COUNT() = 0 THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cliente nao encontrado ou ja anonimizado';
+        END IF;
+
+    ELSEIF p_tipo_titular = 'ENTREGADOR' THEN
+        SELECT ativo INTO v_ativo FROM entregador WHERE id_entregador = p_id_titular FOR UPDATE;
+        IF EXISTS (
+            SELECT 1 FROM entrega
+            WHERE id_entregador = p_id_titular AND situacao IN ('ATRIBUIDA','COLETADA')
+        ) THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Entregador possui entrega em aberto';
+        END IF;
+
+        UPDATE entregador
+           SET nome = 'TITULAR ANONIMIZADO',
+               cpf_hash = SHA2(CONCAT(UUID(), RAND(), id_entregador), 256),
+               cpf_cifrado = NULL,
+               telefone_cifrado = NULL,
+               senha_hash = SHA2(CONCAT(UUID(), RAND()), 256),
+               data_anonimizacao = CURRENT_TIMESTAMP,
+               ativo = 0,
+               situacao = 'BLOQUEADO'
+         WHERE id_entregador = p_id_titular AND data_anonimizacao IS NULL;
+
+        IF ROW_COUNT() = 0 THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Entregador nao encontrado ou ja anonimizado';
+        END IF;
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Tipo de titular deve ser CLIENTE ou ENTREGADOR';
+    END IF;
+
+    COMMIT;
+END$$
+
+CREATE PROCEDURE sp_processar_anonimizacao_vencida()
+SQL SECURITY DEFINER
+MODIFIES SQL DATA
+BEGIN
+    DECLARE v_fim INT DEFAULT 0;
+    DECLARE v_id_cliente INT UNSIGNED;
+    DECLARE v_id_entregador INT UNSIGNED;
+    DECLARE cur_clientes CURSOR FOR
+        SELECT c.id_cliente
+        FROM cliente c
+        JOIN (
+            SELECT id_cliente, MAX(data_pedido) AS ultima_compra
+            FROM pedido
+            GROUP BY id_cliente
+        ) p ON p.id_cliente = c.id_cliente
+        WHERE c.data_anonimizacao IS NULL
+          AND p.ultima_compra &lt;= CURRENT_TIMESTAMP - INTERVAL 5 YEAR;
+    DECLARE cur_entregadores CURSOR FOR
+        SELECT d.id_entregador
+        FROM entregador d
+        JOIN (
+            SELECT id_entregador, MAX(data_entrega) AS ultima_entrega
+            FROM entrega
+            WHERE data_entrega IS NOT NULL
+            GROUP BY id_entregador
+        ) e ON e.id_entregador = d.id_entregador
+        WHERE d.data_anonimizacao IS NULL
+          AND e.ultima_entrega &lt;= CURRENT_TIMESTAMP - INTERVAL 5 YEAR;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_fim = 1;
+
+    OPEN cur_clientes;
+    loop_clientes: LOOP
+        FETCH cur_clientes INTO v_id_cliente;
+        IF v_fim = 1 THEN
+            LEAVE loop_clientes;
+        END IF;
+        CALL sp_anonimizar_titular('CLIENTE', v_id_cliente);
+    END LOOP;
+    CLOSE cur_clientes;
+
+    SET v_fim = 0;
+    OPEN cur_entregadores;
+    loop_entregadores: LOOP
+        FETCH cur_entregadores INTO v_id_entregador;
+        IF v_fim = 1 THEN
+            LEAVE loop_entregadores;
+        END IF;
+        CALL sp_anonimizar_titular('ENTREGADOR', v_id_entregador);
+    END LOOP;
+    CLOSE cur_entregadores;
+END$$
+
+-- Evento diario. Para executa-lo automaticamente, o administrador deve habilitar
+-- event_scheduler=ON no servidor MySQL.
+CREATE EVENT IF NOT EXISTS ev_anonimizacao_diaria
+ON SCHEDULE EVERY 1 DAY
+STARTS (CURRENT_TIMESTAMP + INTERVAL 1 DAY)
+ON COMPLETION PRESERVE
+ENABLE
+DO CALL sp_processar_anonimizacao_vencida()$$
+
+-- ============================================================================
+-- 11. TRIGGERS DE VALIDACAO E CICLO DE VIDA
+-- ============================================================================
+
+CREATE TRIGGER trg_restaurante_bi
+BEFORE INSERT ON restaurante
+FOR EACH ROW
+BEGIN
+    IF fn_valida_cnpj(NEW.cnpj) &lt;&gt; 1 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'CNPJ invalido';
+    END IF;
+END$$
+
+CREATE TRIGGER trg_restaurante_bu
+BEFORE UPDATE ON restaurante
+FOR EACH ROW
+BEGIN
+    IF fn_valida_cnpj(NEW.cnpj) &lt;&gt; 1 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'CNPJ invalido';
+    END IF;
+END$$
+
+CREATE TRIGGER trg_pedido_bi
+BEFORE INSERT ON pedido
+FOR EACH ROW
+BEGIN
+    DECLARE v_cliente_ativo TINYINT;
+    DECLARE v_revogacao DATETIME;
+    DECLARE v_restaurante_ativo TINYINT;
+    DECLARE v_restaurante_situacao VARCHAR(20);
+
+    IF @app_id_cliente IS NOT NULL AND @app_id_cliente &lt;&gt; NEW.id_cliente THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cliente autenticado so pode criar pedido proprio';
+    END IF;
+
+    SELECT ativo, data_revogacao_consentimento
+      INTO v_cliente_ativo, v_revogacao
+    FROM cliente WHERE id_cliente = NEW.id_cliente;
+    IF v_cliente_ativo &lt;&gt; 1 OR v_revogacao IS NOT NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nao e permitido criar pedido para cliente inativo ou com consentimento revogado';
+    END IF;
+
+    SELECT ativo, situacao
+      INTO v_restaurante_ativo, v_restaurante_situacao
+    FROM restaurante WHERE id_restaurante = NEW.id_restaurante;
+    IF v_restaurante_ativo &lt;&gt; 1 OR v_restaurante_situacao = 'SUSPENSO' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nao e permitido criar pedido para restaurante inativo ou suspenso';
+    END IF;
+
+    SET NEW.data_pedido = CURRENT_TIMESTAMP;
+    SET NEW.situacao = 'CRIADO';
+END$$
+
+CREATE TRIGGER trg_pedido_bu
+BEFORE UPDATE ON pedido
+FOR EACH ROW
+BEGIN
+    DECLARE v_perfil_cancelamento VARCHAR(20);
+    DECLARE v_restaurante_usuario_cancelamento INT UNSIGNED;
+    DECLARE v_usuario_cancelamento_ativo TINYINT UNSIGNED;
+
+    IF OLD.situacao IN ('ENTREGUE','CANCELADO') THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pedido encerrado e imutavel';
+    END IF;
+
+    IF NEW.situacao &lt;&gt; OLD.situacao THEN
+        IF NOT (
+            (OLD.situacao = 'CRIADO' AND NEW.situacao IN ('CONFIRMADO','CANCELADO')) OR
+            (OLD.situacao = 'CONFIRMADO' AND NEW.situacao IN ('EM_PREPARO','CANCELADO')) OR
+            (OLD.situacao = 'EM_PREPARO' AND NEW.situacao IN ('PRONTO','CANCELADO')) OR
+            (OLD.situacao = 'PRONTO' AND NEW.situacao IN ('EM_ROTA','CANCELADO')) OR
+            (OLD.situacao = 'EM_ROTA' AND NEW.situacao IN ('ENTREGUE','CANCELADO'))
+        ) THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Transicao de situacao do pedido nao permitida';
+        END IF;
+    END IF;
+
+    IF NEW.situacao = 'CONFIRMADO' AND OLD.situacao &lt;&gt; 'CONFIRMADO'
+       AND COALESCE(@permitir_confirmacao, 0) &lt;&gt; 1 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Use CALL sp_confirmar_pedido(id) para confirmar o pedido';
+    END IF;
+
+    IF OLD.situacao &lt;&gt; 'CRIADO' AND (
+        NOT (NEW.id_cliente &lt;=&gt; OLD.id_cliente) OR
+        NOT (NEW.id_restaurante &lt;=&gt; OLD.id_restaurante) OR
+        NOT (NEW.id_endereco_cliente &lt;=&gt; OLD.id_endereco_cliente) OR
+        NOT (NEW.id_cupom &lt;=&gt; OLD.id_cupom) OR
+        NOT (NEW.taxa_entrega &lt;=&gt; OLD.taxa_entrega) OR
+        NOT (NEW.valor_desconto &lt;=&gt; OLD.valor_desconto) OR
+        NOT (NEW.percentual_comissao_aplicado &lt;=&gt; OLD.percentual_comissao_aplicado)
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Dados e valores do pedido sao congelados apos a confirmacao';
+    END IF;
+
+    IF NEW.situacao = 'EM_ROTA' AND OLD.situacao &lt;&gt; 'EM_ROTA'
+       AND COALESCE(@permitir_inicio_entrega, 0) &lt;&gt; 1 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pedido so pode entrar em EM_ROTA apos atribuicao de entrega';
+    END IF;
+
+    IF NEW.situacao = 'ENTREGUE' AND OLD.situacao &lt;&gt; 'ENTREGUE'
+       AND COALESCE(@permitir_entrega, 0) &lt;&gt; 1 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'A conclusao do pedido deve ocorrer pela rotina de entrega';
+    END IF;
+
+    IF NEW.situacao = 'CANCELADO' AND OLD.situacao &lt;&gt; 'CANCELADO' THEN
+        IF NEW.origem_cancelamento IS NULL OR NEW.motivo_cancelamento IS NULL OR TRIM(NEW.motivo_cancelamento) = '' THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cancelamento exige origem e motivo';
+        END IF;
+        IF NEW.origem_cancelamento = 'CLIENTE' THEN
+            IF @app_id_cliente IS NULL OR @app_id_cliente &lt;&gt; OLD.id_cliente THEN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cliente so pode cancelar o proprio pedido';
+            END IF;
+        ELSEIF NEW.origem_cancelamento = 'RESTAURANTE' THEN
+            IF @app_id_usuario IS NULL THEN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cancelamento pelo restaurante exige usuario autenticado';
+            END IF;
+            SELECT perfil, id_restaurante, ativo
+              INTO v_perfil_cancelamento, v_restaurante_usuario_cancelamento, v_usuario_cancelamento_ativo
+            FROM usuario WHERE id_usuario = @app_id_usuario;
+            IF v_usuario_cancelamento_ativo &lt;&gt; 1 OR v_perfil_cancelamento &lt;&gt; 'RESTAURANTE'
+               OR v_restaurante_usuario_cancelamento &lt;&gt; OLD.id_restaurante THEN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Restaurante so pode cancelar pedido do proprio estabelecimento';
+            END IF;
+        ELSEIF NEW.origem_cancelamento = 'SUPORTE' THEN
+            IF NEW.id_usuario_cancelamento IS NULL OR NEW.id_usuario_cancelamento &lt;&gt; @app_id_usuario THEN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cancelamento por suporte exige o usuario autenticado responsavel';
+            END IF;
+            SELECT perfil, ativo INTO v_perfil_cancelamento, v_usuario_cancelamento_ativo
+            FROM usuario WHERE id_usuario = NEW.id_usuario_cancelamento;
+            IF v_usuario_cancelamento_ativo &lt;&gt; 1 OR v_perfil_cancelamento &lt;&gt; 'SUPORTE' THEN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cancelamento por suporte exige perfil SUPORTE ativo';
+            END IF;
+        ELSEIF NEW.origem_cancelamento = 'SISTEMA' THEN
+            IF @app_id_usuario IS NULL THEN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cancelamento de sistema exige usuario de servico';
+            END IF;
+            SELECT perfil, ativo INTO v_perfil_cancelamento, v_usuario_cancelamento_ativo
+            FROM usuario WHERE id_usuario = @app_id_usuario;
+            IF v_usuario_cancelamento_ativo &lt;&gt; 1 OR v_perfil_cancelamento &lt;&gt; 'ADMINISTRADOR' THEN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cancelamento de sistema exige usuario ADMINISTRADOR ativo';
+            END IF;
+            SET NEW.id_usuario_cancelamento = @app_id_usuario;
+        END IF;
+        SET NEW.data_cancelamento = CURRENT_TIMESTAMP;
+    END IF;
+
+    IF NOT (NEW.data_pedido &lt;=&gt; OLD.data_pedido) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'data_pedido e gerada pelo servidor e nao pode ser alterada';
+    END IF;
+    IF NEW.situacao &lt;&gt; 'CANCELADO' AND NEW.data_cancelamento IS NOT NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'data_cancelamento so pode ser preenchida no cancelamento';
+    END IF;
+END$$
+
+CREATE TRIGGER trg_pedido_ai
+AFTER INSERT ON pedido
+FOR EACH ROW
+BEGIN
+    SET @permitir_historico_status = 1;
+    INSERT INTO historico_status_pedido (
+        id_pedido, id_usuario, situacao_anterior, situacao_nova, data_mudanca
+    ) VALUES (
+        NEW.id_pedido, @app_id_usuario, NULL, NEW.situacao, CURRENT_TIMESTAMP
+    );
+    SET @permitir_historico_status = NULL;
+END$$
+
+CREATE TRIGGER trg_pedido_au
+AFTER UPDATE ON pedido
+FOR EACH ROW
+BEGIN
+    DECLARE v_id_entregador INT UNSIGNED DEFAULT NULL;
+    DECLARE v_entregas_abertas INT DEFAULT 0;
+
+    IF NEW.situacao &lt;&gt; OLD.situacao THEN
+        SET @permitir_historico_status = 1;
+        INSERT INTO historico_status_pedido (
+            id_pedido, id_usuario, situacao_anterior, situacao_nova, data_mudanca
+        ) VALUES (
+            NEW.id_pedido, @app_id_usuario, OLD.situacao, NEW.situacao, CURRENT_TIMESTAMP
+        );
+        SET @permitir_historico_status = NULL;
+
+        IF NEW.situacao = 'ENTREGUE' THEN
+            UPDATE pagamento
+               SET situacao = 'APROVADO'
+             WHERE id_pedido = NEW.id_pedido AND situacao = 'PENDENTE'
+               AND id_forma_pagamento IN (
+                   SELECT id_forma_pagamento FROM forma_pagamento WHERE exige_pagamento_online = 0
+               );
+        END IF;
+
+        IF NEW.situacao = 'CANCELADO' THEN
+            SET @permitir_estorno = 1;
+            IF OLD.situacao IN ('CRIADO','CONFIRMADO') THEN
+                INSERT INTO estorno (id_pagamento, id_usuario, valor, motivo, situacao, data_solicitacao)
+                SELECT pg.id_pagamento, @app_id_usuario, pg.valor,
+                       CONCAT('Estorno integral automatico - pedido ', NEW.id_pedido),
+                       'CONCLUIDO', CURRENT_TIMESTAMP
+                FROM pagamento pg
+                WHERE pg.id_pedido = NEW.id_pedido AND pg.situacao = 'APROVADO';
+            ELSE
+                INSERT INTO estorno (id_pagamento, id_usuario, valor, motivo, situacao, data_solicitacao)
+                SELECT pg.id_pagamento, @app_id_usuario, pg.valor,
+                       CONCAT('Solicitacao de estorno - pedido ', NEW.id_pedido),
+                       'EM_ANALISE', CURRENT_TIMESTAMP
+                FROM pagamento pg
+                WHERE pg.id_pedido = NEW.id_pedido AND pg.situacao = 'APROVADO';
+            END IF;
+            SET @permitir_estorno = NULL;
+
+            SET @permitir_atualizacao_entrega = 1;
+            UPDATE entrega
+               SET situacao = 'CANCELADA'
+             WHERE id_pedido = NEW.id_pedido AND situacao IN ('ATRIBUIDA','COLETADA');
+            SET @permitir_atualizacao_entrega = NULL;
+
+            IF EXISTS (SELECT 1 FROM entrega WHERE id_pedido = NEW.id_pedido) THEN
+                SELECT id_entregador INTO v_id_entregador
+                FROM entrega WHERE id_pedido = NEW.id_pedido;
+                SELECT COUNT(*) INTO v_entregas_abertas
+                FROM entrega
+                WHERE id_entregador = v_id_entregador AND situacao IN ('ATRIBUIDA','COLETADA');
+                UPDATE entregador
+                   SET situacao = CASE
+                       WHEN ativo = 0 OR situacao = 'BLOQUEADO' THEN 'BLOQUEADO'
+                       WHEN v_entregas_abertas &gt; 0 THEN 'EM_ENTREGA'
+                       ELSE 'DISPONIVEL' END
+                 WHERE id_entregador = v_id_entregador;
+            END IF;
+        END IF;
+    END IF;
+END$$
+
+CREATE TRIGGER trg_item_pedido_bi
+BEFORE INSERT ON item_pedido
+FOR EACH ROW
+BEGIN
+    DECLARE v_situacao_pedido VARCHAR(20);
+    DECLARE v_id_restaurante_pedido INT UNSIGNED;
+    DECLARE v_id_restaurante_produto INT UNSIGNED;
+    DECLARE v_preco DECIMAL(10,2);
+    DECLARE v_ativo TINYINT;
+    DECLARE v_disponivel TINYINT;
+    DECLARE v_restaurante_ativo TINYINT;
+    DECLARE v_restaurante_situacao VARCHAR(20);
+
+    SELECT situacao, id_restaurante
+      INTO v_situacao_pedido, v_id_restaurante_pedido
+    FROM pedido WHERE id_pedido = NEW.id_pedido;
+    IF @app_id_cliente IS NOT NULL AND @app_id_cliente &lt;&gt; (SELECT id_cliente FROM pedido WHERE id_pedido = NEW.id_pedido) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cliente autenticado so pode incluir itens em pedido proprio';
+    END IF;
+    IF v_situacao_pedido &lt;&gt; 'CRIADO' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Itens so podem ser incluidos em pedido CRIADO';
+    END IF;
+
+    SELECT id_restaurante, preco_tabela, ativo, disponivel
+      INTO v_id_restaurante_produto, v_preco, v_ativo, v_disponivel
+    FROM produto WHERE id_produto = NEW.id_produto;
+    IF v_id_restaurante_produto &lt;&gt; v_id_restaurante_pedido THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Todos os itens devem pertencer ao restaurante do pedido';
+    END IF;
+    IF v_ativo &lt;&gt; 1 OR v_disponivel &lt;&gt; 1 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Produto inativo ou indisponivel';
+    END IF;
+
+    SELECT ativo, situacao INTO v_restaurante_ativo, v_restaurante_situacao
+    FROM restaurante WHERE id_restaurante = v_id_restaurante_produto;
+    IF v_restaurante_ativo &lt;&gt; 1 OR v_restaurante_situacao &lt;&gt; 'ABERTO' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Produto de restaurante inativo ou fora de operacao';
+    END IF;
+
+    SET NEW.preco_unitario_venda = v_preco;
+END$$
+
+CREATE TRIGGER trg_item_pedido_bu
+BEFORE UPDATE ON item_pedido
+FOR EACH ROW
+BEGIN
+    DECLARE v_situacao_pedido VARCHAR(20);
+    IF NEW.preco_unitario_venda &lt;&gt; OLD.preco_unitario_venda THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Preco unitario de venda e imutavel';
+    END IF;
+    IF NEW.id_pedido &lt;&gt; OLD.id_pedido OR NEW.id_produto &lt;&gt; OLD.id_produto THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pedido e produto do item nao podem ser substituidos';
+    END IF;
+    SELECT situacao INTO v_situacao_pedido FROM pedido WHERE id_pedido = OLD.id_pedido;
+    IF v_situacao_pedido &lt;&gt; 'CRIADO' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Itens de pedido confirmado nao podem ser alterados';
+    END IF;
+END$$
+
+CREATE TRIGGER trg_item_pedido_bd
+BEFORE DELETE ON item_pedido
+FOR EACH ROW
+BEGIN
+    DECLARE v_situacao_pedido VARCHAR(20);
+    SELECT situacao INTO v_situacao_pedido FROM pedido WHERE id_pedido = OLD.id_pedido;
+    IF v_situacao_pedido IN ('ENTREGUE','CANCELADO') OR v_situacao_pedido &lt;&gt; 'CRIADO' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Itens nao podem ser excluidos apos a confirmacao';
+    END IF;
+END$$
+
+CREATE TRIGGER trg_produto_bu
+BEFORE UPDATE ON produto
+FOR EACH ROW
+BEGIN
+    DECLARE v_perfil VARCHAR(20);
+    DECLARE v_id_restaurante_usuario INT UNSIGNED;
+    DECLARE v_usuario_ativo TINYINT;
+    DECLARE v_tem_pedidos INT DEFAULT 0;
+
+    IF NEW.id_restaurante &lt;&gt; OLD.id_restaurante THEN
+        SELECT COUNT(*) INTO v_tem_pedidos FROM item_pedido WHERE id_produto = OLD.id_produto;
+        IF v_tem_pedidos &gt; 0 THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Produto vinculado a pedidos nao pode trocar de restaurante';
+        END IF;
+    END IF;
+
+    IF NEW.preco_tabela &lt;&gt; OLD.preco_tabela THEN
+        IF @app_id_usuario IS NULL THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Alteracao de preco exige usuario autenticado na sessao';
+        END IF;
+        SELECT perfil, id_restaurante, ativo
+          INTO v_perfil, v_id_restaurante_usuario, v_usuario_ativo
+        FROM usuario WHERE id_usuario = @app_id_usuario;
+        IF v_usuario_ativo &lt;&gt; 1 OR v_perfil NOT IN ('RESTAURANTE','GERENTE','ADMINISTRADOR') THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Perfil sem permissao para alterar preco';
+        END IF;
+        IF v_perfil = 'RESTAURANTE' AND v_id_restaurante_usuario &lt;&gt; OLD.id_restaurante THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Usuario Restaurante so pode alterar produtos do proprio estabelecimento';
+        END IF;
+    END IF;
+END$$
+
+CREATE TRIGGER trg_produto_au
+AFTER UPDATE ON produto
+FOR EACH ROW
+BEGIN
+    IF NEW.preco_tabela &lt;&gt; OLD.preco_tabela THEN
+        SET @permitir_historico_preco = 1;
+        INSERT INTO historico_preco (
+            id_produto, id_usuario, preco_anterior, preco_novo, data_alteracao
+        ) VALUES (
+            NEW.id_produto, @app_id_usuario, OLD.preco_tabela, NEW.preco_tabela, CURRENT_TIMESTAMP
+        );
+        SET @permitir_historico_preco = NULL;
+    END IF;
+END$$
+
+CREATE TRIGGER trg_entrega_bi
+BEFORE INSERT ON entrega
+FOR EACH ROW
+BEGIN
+    DECLARE v_ativo TINYINT;
+    DECLARE v_situacao_entregador VARCHAR(20);
+    DECLARE v_abertas INT DEFAULT 0;
+    DECLARE v_situacao_pedido VARCHAR(20);
+
+    SELECT ativo, situacao INTO v_ativo, v_situacao_entregador
+    FROM entregador WHERE id_entregador = NEW.id_entregador FOR UPDATE;
+    IF v_ativo &lt;&gt; 1 OR v_situacao_entregador NOT IN ('DISPONIVEL','EM_ENTREGA') THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Entregador indisponivel para nova entrega';
+    END IF;
+
+    SELECT COUNT(*) INTO v_abertas
+    FROM entrega
+    WHERE id_entregador = NEW.id_entregador AND situacao IN ('ATRIBUIDA','COLETADA');
+    IF v_abertas &gt;= 2 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Entregador ja possui duas entregas em aberto';
+    END IF;
+
+    SELECT situacao INTO v_situacao_pedido FROM pedido WHERE id_pedido = NEW.id_pedido;
+    IF v_situacao_pedido &lt;&gt; 'PRONTO' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Entrega so pode ser atribuida a pedido PRONTO';
+    END IF;
+    SET NEW.data_atribuicao = CURRENT_TIMESTAMP;
+    SET NEW.data_coleta = NULL;
+    SET NEW.data_entrega = NULL;
+    SET NEW.situacao = 'ATRIBUIDA';
+END$$
+
+CREATE TRIGGER trg_entrega_bu
+BEFORE UPDATE ON entrega
+FOR EACH ROW
+BEGIN
+    DECLARE v_tem_alcool TINYINT DEFAULT 0;
+    DECLARE v_data_nascimento DATE;
+    DECLARE v_data_pedido DATETIME;
+
+    IF OLD.situacao IN ('CONCLUIDA','CANCELADA') THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Entrega encerrada e imutavel';
+    END IF;
+    IF NEW.data_atribuicao &lt;&gt; OLD.data_atribuicao THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'data_atribuicao e gerada pelo servidor';
+    END IF;
+    IF NOT (NEW.data_coleta &lt;=&gt; OLD.data_coleta) AND NOT (NEW.situacao = 'COLETADA' AND OLD.situacao = 'ATRIBUIDA') THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'data_coleta e gerada pelo servidor';
+    END IF;
+    IF NOT (NEW.data_entrega &lt;=&gt; OLD.data_entrega) AND NOT (NEW.situacao = 'CONCLUIDA' AND OLD.situacao = 'COLETADA') THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'data_entrega e gerada pelo servidor';
+    END IF;
+
+    IF NEW.situacao &lt;&gt; OLD.situacao THEN
+        IF COALESCE(@permitir_atualizacao_entrega, 0) &lt;&gt; 1 THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Use sp_atualizar_entrega para alterar a situacao da entrega';
+        END IF;
+        IF NOT (
+            (OLD.situacao = 'ATRIBUIDA' AND NEW.situacao IN ('COLETADA','CANCELADA')) OR
+            (OLD.situacao = 'COLETADA' AND NEW.situacao IN ('CONCLUIDA','CANCELADA'))
+        ) THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Transicao de situacao da entrega nao permitida';
+        END IF;
+    END IF;
+
+    IF NEW.situacao = 'COLETADA' AND OLD.situacao = 'ATRIBUIDA' THEN
+        SET NEW.data_coleta = CURRENT_TIMESTAMP;
+    END IF;
+
+    IF NEW.situacao = 'CONCLUIDA' AND OLD.situacao &lt;&gt; 'CONCLUIDA' THEN
+        SELECT p.data_pedido, c.data_nascimento
+          INTO v_data_pedido, v_data_nascimento
+        FROM pedido p JOIN cliente c ON c.id_cliente = p.id_cliente
+        WHERE p.id_pedido = NEW.id_pedido;
+
+        SELECT EXISTS(
+            SELECT 1 FROM item_pedido ip JOIN produto pr ON pr.id_produto = ip.id_produto
+            WHERE ip.id_pedido = NEW.id_pedido AND pr.alcoolico = 1
+        ) INTO v_tem_alcool;
+
+        IF v_tem_alcool = 1 THEN
+            IF NEW.maioridade_conferida &lt;&gt; 1 THEN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Entrega com bebida alcoolica exige conferencia de maioridade';
+            END IF;
+            IF v_data_nascimento IS NULL OR TIMESTAMPDIFF(YEAR, v_data_nascimento, DATE(v_data_pedido)) &lt; 18 THEN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cliente menor de 18 anos nao pode receber bebida alcoolica';
+            END IF;
+        END IF;
+        SET NEW.data_entrega = CURRENT_TIMESTAMP;
+    END IF;
+END$$
+
+CREATE TRIGGER trg_entrega_ai
+AFTER INSERT ON entrega
+FOR EACH ROW
+BEGIN
+    UPDATE entregador SET situacao = 'EM_ENTREGA' WHERE id_entregador = NEW.id_entregador AND ativo = 1;
+    SET @permitir_inicio_entrega = 1;
+    UPDATE pedido SET situacao = 'EM_ROTA' WHERE id_pedido = NEW.id_pedido AND situacao = 'PRONTO';
+    SET @permitir_inicio_entrega = NULL;
+END$$
+
+CREATE TRIGGER trg_entrega_au
+AFTER UPDATE ON entrega
+FOR EACH ROW
+BEGIN
+    IF NEW.situacao = 'CONCLUIDA' AND OLD.situacao &lt;&gt; 'CONCLUIDA' THEN
+        SET @permitir_entrega = 1;
+        UPDATE pedido SET situacao = 'ENTREGUE'
+        WHERE id_pedido = NEW.id_pedido AND situacao = 'EM_ROTA';
+        SET @permitir_entrega = NULL;
+    END IF;
+END$$
+
+CREATE TRIGGER trg_estorno_bi
+BEFORE INSERT ON estorno
+FOR EACH ROW
+BEGIN
+    DECLARE v_valor_pagamento DECIMAL(10,2);
+    DECLARE v_ja_estornado DECIMAL(10,2) DEFAULT 0.00;
+    DECLARE v_perfil VARCHAR(20);
+
+    IF COALESCE(@permitir_estorno, 0) &lt;&gt; 1 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Use sp_solicitar_estorno ou a rotina automatica de cancelamento';
+    END IF;
+
+    SELECT valor INTO v_valor_pagamento
+    FROM pagamento WHERE id_pagamento = NEW.id_pagamento FOR UPDATE;
+
+    SELECT COALESCE(SUM(valor), 0.00) INTO v_ja_estornado
+    FROM estorno
+    WHERE id_pagamento = NEW.id_pagamento AND situacao &lt;&gt; 'NEGADO';
+
+    IF v_ja_estornado + NEW.valor &gt; v_valor_pagamento THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Soma dos estornos excede o valor do pagamento';
+    END IF;
+
+    IF NEW.situacao IN ('APROVADO','NEGADO') THEN
+        IF NEW.id_usuario IS NULL THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Decisao de estorno exige usuario do suporte';
+        END IF;
+        SELECT perfil INTO v_perfil FROM usuario WHERE id_usuario = NEW.id_usuario;
+        IF v_perfil &lt;&gt; 'SUPORTE' THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Somente usuario SUPORTE pode decidir estorno';
+        END IF;
+    END IF;
+
+    SET NEW.data_solicitacao = CURRENT_TIMESTAMP;
+    IF NEW.situacao = 'CONCLUIDO' AND NEW.data_conclusao IS NULL THEN
+        SET NEW.data_conclusao = CURRENT_TIMESTAMP;
+    END IF;
+END$$
+
+CREATE TRIGGER trg_estorno_bu
+BEFORE UPDATE ON estorno
+FOR EACH ROW
+BEGIN
+    DECLARE v_valor_pagamento DECIMAL(10,2);
+    DECLARE v_ja_estornado DECIMAL(10,2) DEFAULT 0.00;
+    DECLARE v_perfil VARCHAR(20);
+
+    IF NEW.data_solicitacao &lt;&gt; OLD.data_solicitacao THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'data_solicitacao e gerada pelo servidor';
+    END IF;
+    IF NOT (NEW.data_conclusao &lt;=&gt; OLD.data_conclusao) AND NOT (NEW.situacao = 'CONCLUIDO' AND OLD.situacao = 'APROVADO') THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'data_conclusao e gerada pelo servidor';
+    END IF;
+    IF NEW.id_pagamento &lt;&gt; OLD.id_pagamento OR NEW.valor &lt;&gt; OLD.valor THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pagamento e valor do estorno sao imutaveis';
+    END IF;
+
+    SELECT valor INTO v_valor_pagamento
+    FROM pagamento WHERE id_pagamento = NEW.id_pagamento FOR UPDATE;
+    SELECT COALESCE(SUM(valor), 0.00) INTO v_ja_estornado
+    FROM estorno
+    WHERE id_pagamento = NEW.id_pagamento
+      AND id_estorno &lt;&gt; OLD.id_estorno
+      AND situacao &lt;&gt; 'NEGADO';
+    IF NEW.situacao &lt;&gt; 'NEGADO' AND v_ja_estornado + NEW.valor &gt; v_valor_pagamento THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Soma dos estornos excede o valor do pagamento';
+    END IF;
+
+    IF NEW.situacao &lt;&gt; OLD.situacao AND NOT (
+        (OLD.situacao = 'SOLICITADO' AND NEW.situacao IN ('EM_ANALISE','APROVADO','NEGADO')) OR
+        (OLD.situacao = 'EM_ANALISE' AND NEW.situacao IN ('APROVADO','NEGADO')) OR
+        (OLD.situacao = 'APROVADO' AND NEW.situacao = 'CONCLUIDO')
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Transicao de situacao do estorno nao permitida';
+    END IF;
+
+    IF NEW.situacao IN ('APROVADO','NEGADO') AND OLD.situacao NOT IN ('APROVADO','NEGADO') THEN
+        IF NEW.id_usuario IS NULL THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Decisao de estorno exige usuario do suporte';
+        END IF;
+        SELECT perfil INTO v_perfil FROM usuario WHERE id_usuario = NEW.id_usuario;
+        IF v_perfil &lt;&gt; 'SUPORTE' THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Somente usuario SUPORTE pode decidir estorno';
+        END IF;
+    END IF;
+    IF NEW.situacao = 'CONCLUIDO' AND OLD.situacao &lt;&gt; 'CONCLUIDO' THEN
+        SET NEW.data_conclusao = CURRENT_TIMESTAMP;
+    END IF;
+END$$
+
+CREATE TRIGGER trg_estorno_au
+AFTER UPDATE ON estorno
+FOR EACH ROW
+BEGIN
+    DECLARE v_total_concluido DECIMAL(10,2) DEFAULT 0.00;
+    DECLARE v_valor_pagamento DECIMAL(10,2) DEFAULT 0.00;
+    IF NEW.situacao = 'CONCLUIDO' AND OLD.situacao &lt;&gt; 'CONCLUIDO' THEN
+        SELECT COALESCE(SUM(valor),0.00) INTO v_total_concluido
+        FROM estorno WHERE id_pagamento = NEW.id_pagamento AND situacao = 'CONCLUIDO';
+        SELECT valor INTO v_valor_pagamento FROM pagamento WHERE id_pagamento = NEW.id_pagamento;
+        IF v_total_concluido &gt;= v_valor_pagamento THEN
+            UPDATE pagamento SET situacao = 'ESTORNADO' WHERE id_pagamento = NEW.id_pagamento;
+        END IF;
+    END IF;
+END$$
+
+CREATE TRIGGER trg_avaliacao_bi
+BEFORE INSERT ON avaliacao
+FOR EACH ROW
+BEGIN
+    DECLARE v_situacao VARCHAR(20);
+    DECLARE v_data_entrega DATETIME;
+    SELECT p.situacao, e.data_entrega
+      INTO v_situacao, v_data_entrega
+    FROM pedido p JOIN entrega e ON e.id_pedido = p.id_pedido
+    WHERE p.id_pedido = NEW.id_pedido;
+
+    IF v_situacao &lt;&gt; 'ENTREGUE' OR v_data_entrega IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Somente pedidos ENTREGUE podem ser avaliados';
+    END IF;
+    IF CURRENT_TIMESTAMP &gt; v_data_entrega + INTERVAL 7 DAY THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Prazo de avaliacao de 7 dias expirado';
+    END IF;
+    SET NEW.data_avaliacao = CURRENT_TIMESTAMP;
+END$$
+
+-- ============================================================================
+-- 12. TRIGGERS DE TIMESTAMP CONTROLADO PELO SERVIDOR
+-- ============================================================================
+
+
+CREATE TRIGGER trg_avaliacao_bu
+BEFORE UPDATE ON avaliacao
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Avaliacao registrada e imutavel';
+END$$
+
+CREATE TRIGGER trg_pagamento_bi
+BEFORE INSERT ON pagamento
+FOR EACH ROW
+BEGIN
+    DECLARE v_situacao_pedido VARCHAR(20);
+    DECLARE v_forma_ativa TINYINT;
+    SELECT situacao INTO v_situacao_pedido FROM pedido WHERE id_pedido = NEW.id_pedido;
+    SELECT ativo INTO v_forma_ativa FROM forma_pagamento WHERE id_forma_pagamento = NEW.id_forma_pagamento;
+    IF v_situacao_pedido &lt;&gt; 'CRIADO' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pagamento deve ser registrado antes da confirmacao do pedido';
+    END IF;
+    IF v_forma_ativa &lt;&gt; 1 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Forma de pagamento inativa';
+    END IF;
+    SET NEW.data_pagamento = CURRENT_TIMESTAMP;
+END$$
+
+CREATE TRIGGER trg_pagamento_bu
+BEFORE UPDATE ON pagamento
+FOR EACH ROW
+BEGIN
+    IF NEW.data_pagamento &lt;&gt; OLD.data_pagamento THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'data_pagamento e gerada pelo servidor';
+    END IF;
+    IF NEW.id_pedido &lt;&gt; OLD.id_pedido OR NEW.id_forma_pagamento &lt;&gt; OLD.id_forma_pagamento OR NEW.valor &lt;&gt; OLD.valor THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pedido, forma e valor do pagamento sao imutaveis apos o registro';
+    END IF;
+    IF NEW.situacao &lt;&gt; OLD.situacao AND NOT (
+        (OLD.situacao = 'PENDENTE' AND NEW.situacao IN ('APROVADO','RECUSADO','ESTORNADO')) OR
+        (OLD.situacao = 'APROVADO' AND NEW.situacao = 'ESTORNADO')
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Transicao de situacao do pagamento nao permitida';
+    END IF;
+END$$
+
+CREATE TRIGGER trg_historico_status_bu
+BEFORE UPDATE ON historico_status_pedido
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Historico de status e append-only';
+END$$
+
+CREATE TRIGGER trg_historico_status_bd
+BEFORE DELETE ON historico_status_pedido
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Historico de status nao pode ser excluido';
+END$$
+
+CREATE TRIGGER trg_log_auditoria_bu
+BEFORE UPDATE ON log_auditoria
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Log de auditoria e append-only';
+END$$
+
+CREATE TRIGGER trg_log_auditoria_bd
+BEFORE DELETE ON log_auditoria
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Log de auditoria nao pode ser excluido';
+END$$
+
+-- ============================================================================
+-- 13. TRIGGERS DE AUDITORIA (RNF01 / RNF12 / PR05)
+-- As capturas evitam gravar CPF, telefone cifrado, senha ou token em claro.
+-- ============================================================================
+
+CREATE TRIGGER trg_aud_cliente_ai
+AFTER INSERT ON cliente
+FOR EACH ROW
+BEGIN
+    CALL sp_registrar_auditoria('INSERT','cliente',NEW.id_cliente,NULL,
+      JSON_OBJECT('nome',NEW.nome,'cpf_hash',NEW.cpf_hash,
+                  'email_mascarado',IF(NEW.email IS NULL,NULL,CONCAT(LEFT(NEW.email,1),'***@',SUBSTRING_INDEX(NEW.email,'@',-1))),
+                  'ativo',NEW.ativo,'data_anonimizacao',NEW.data_anonimizacao));
+END$$
+
+CREATE TRIGGER trg_aud_cliente_au
+AFTER UPDATE ON cliente
+FOR EACH ROW
+BEGIN
+    CALL sp_registrar_auditoria(
+      IF(OLD.ativo=1 AND NEW.ativo=0,'DELETE_LOGICO','UPDATE'), 'cliente', NEW.id_cliente,
+      JSON_OBJECT('nome',OLD.nome,'cpf_hash',OLD.cpf_hash,'ativo',OLD.ativo),
+      JSON_OBJECT('nome',NEW.nome,'cpf_hash',NEW.cpf_hash,
+                  'email_mascarado',IF(NEW.email IS NULL,NULL,CONCAT(LEFT(NEW.email,1),'***@',SUBSTRING_INDEX(NEW.email,'@',-1))),
+                  'ativo',NEW.ativo,'data_anonimizacao',NEW.data_anonimizacao));
+END$$
+
+CREATE TRIGGER trg_aud_entregador_ai
+AFTER INSERT ON entregador
+FOR EACH ROW
+BEGIN
+    CALL sp_registrar_auditoria('INSERT','entregador',NEW.id_entregador,NULL,
+      JSON_OBJECT('nome',NEW.nome,'cpf_hash',NEW.cpf_hash,'tipo_veiculo',NEW.tipo_veiculo,'situacao',NEW.situacao,'ativo',NEW.ativo));
+END$$
+
+CREATE TRIGGER trg_aud_entregador_au
+AFTER UPDATE ON entregador
+FOR EACH ROW
+BEGIN
+    CALL sp_registrar_auditoria(IF(OLD.ativo=1 AND NEW.ativo=0,'DELETE_LOGICO','UPDATE'), 'entregador', NEW.id_entregador,
+      JSON_OBJECT('nome',OLD.nome,'situacao',OLD.situacao,'ativo',OLD.ativo),
+      JSON_OBJECT('nome',NEW.nome,'cpf_hash',NEW.cpf_hash,'situacao',NEW.situacao,'ativo',NEW.ativo,'data_anonimizacao',NEW.data_anonimizacao));
+END$$
+
+CREATE TRIGGER trg_aud_restaurante_ai
+AFTER INSERT ON restaurante
+FOR EACH ROW
+BEGIN
+    CALL sp_registrar_auditoria('INSERT','restaurante',NEW.id_restaurante,NULL,
+      JSON_OBJECT('nome_fantasia',NEW.nome_fantasia,'cnpj',NEW.cnpj,'situacao',NEW.situacao,'ativo',NEW.ativo));
+END$$
+
+CREATE TRIGGER trg_aud_restaurante_au
+AFTER UPDATE ON restaurante
+FOR EACH ROW
+BEGIN
+    CALL sp_registrar_auditoria(IF(OLD.ativo=1 AND NEW.ativo=0,'DELETE_LOGICO','UPDATE'), 'restaurante', NEW.id_restaurante,
+      JSON_OBJECT('nome_fantasia',OLD.nome_fantasia,'situacao',OLD.situacao,'ativo',OLD.ativo),
+      JSON_OBJECT('nome_fantasia',NEW.nome_fantasia,'cnpj',NEW.cnpj,'situacao',NEW.situacao,'ativo',NEW.ativo));
+END$$
+
+CREATE TRIGGER trg_aud_produto_ai
+AFTER INSERT ON produto
+FOR EACH ROW
+BEGIN
+    CALL sp_registrar_auditoria('INSERT','produto',NEW.id_produto,NULL,
+      JSON_OBJECT('id_restaurante',NEW.id_restaurante,'nome',NEW.nome,'preco_tabela',NEW.preco_tabela,'ativo',NEW.ativo,'disponivel',NEW.disponivel));
+END$$
+
+CREATE TRIGGER trg_aud_produto_au
+AFTER UPDATE ON produto
+FOR EACH ROW
+BEGIN
+    CALL sp_registrar_auditoria(IF(OLD.ativo=1 AND NEW.ativo=0,'DELETE_LOGICO','UPDATE'), 'produto', NEW.id_produto,
+      JSON_OBJECT('nome',OLD.nome,'preco_tabela',OLD.preco_tabela,'ativo',OLD.ativo,'disponivel',OLD.disponivel),
+      JSON_OBJECT('nome',NEW.nome,'preco_tabela',NEW.preco_tabela,'ativo',NEW.ativo,'disponivel',NEW.disponivel));
+END$$
+
+CREATE TRIGGER trg_aud_pedido_ai
+AFTER INSERT ON pedido
+FOR EACH ROW
+BEGIN
+    CALL sp_registrar_auditoria('INSERT','pedido',NEW.id_pedido,NULL,
+      JSON_OBJECT('id_cliente',NEW.id_cliente,'id_restaurante',NEW.id_restaurante,'situacao',NEW.situacao,'data_pedido',NEW.data_pedido));
+END$$
+
+CREATE TRIGGER trg_aud_pedido_au
+AFTER UPDATE ON pedido
+FOR EACH ROW
+BEGIN
+    CALL sp_registrar_auditoria('UPDATE','pedido',NEW.id_pedido,
+      JSON_OBJECT('situacao',OLD.situacao,'taxa_entrega',OLD.taxa_entrega,'valor_desconto',OLD.valor_desconto),
+      JSON_OBJECT('situacao',NEW.situacao,'taxa_entrega',NEW.taxa_entrega,'valor_desconto',NEW.valor_desconto,'origem_cancelamento',NEW.origem_cancelamento));
+END$$
+
+CREATE TRIGGER trg_aud_pagamento_ai
+AFTER INSERT ON pagamento
+FOR EACH ROW
+BEGIN
+    CALL sp_registrar_auditoria('INSERT','pagamento',NEW.id_pagamento,NULL,
+      JSON_OBJECT('id_pedido',NEW.id_pedido,'valor',NEW.valor,'situacao',NEW.situacao,'ultimos_digitos',NEW.ultimos_digitos,'codigo_transacao_gateway',NEW.codigo_transacao_gateway));
+END$$
+
+CREATE TRIGGER trg_aud_pagamento_au
+AFTER UPDATE ON pagamento
+FOR EACH ROW
+BEGIN
+    CALL sp_registrar_auditoria('UPDATE','pagamento',NEW.id_pagamento,
+      JSON_OBJECT('valor',OLD.valor,'situacao',OLD.situacao),
+      JSON_OBJECT('valor',NEW.valor,'situacao',NEW.situacao,'ultimos_digitos',NEW.ultimos_digitos,'codigo_transacao_gateway',NEW.codigo_transacao_gateway));
+END$$
+
+CREATE TRIGGER trg_aud_estorno_ai
+AFTER INSERT ON estorno
+FOR EACH ROW
+BEGIN
+    CALL sp_registrar_auditoria('INSERT','estorno',NEW.id_estorno,NULL,
+      JSON_OBJECT('id_pagamento',NEW.id_pagamento,'valor',NEW.valor,'situacao',NEW.situacao,'motivo',NEW.motivo));
+END$$
+
+CREATE TRIGGER trg_aud_estorno_au
+AFTER UPDATE ON estorno
+FOR EACH ROW
+BEGIN
+    CALL sp_registrar_auditoria('UPDATE','estorno',NEW.id_estorno,
+      JSON_OBJECT('valor',OLD.valor,'situacao',OLD.situacao),
+      JSON_OBJECT('valor',NEW.valor,'situacao',NEW.situacao,'motivo',NEW.motivo));
+END$$
+
+CREATE TRIGGER trg_aud_usuario_ai
+AFTER INSERT ON usuario
+FOR EACH ROW
+BEGIN
+    CALL sp_registrar_auditoria('INSERT','usuario',NEW.id_usuario,NULL,
+      JSON_OBJECT('nome',NEW.nome,'login',NEW.login,'perfil',NEW.perfil,'ativo',NEW.ativo));
+END$$
+
+CREATE TRIGGER trg_aud_usuario_au
+AFTER UPDATE ON usuario
+FOR EACH ROW
+BEGIN
+    CALL sp_registrar_auditoria(IF(OLD.ativo=1 AND NEW.ativo=0,'DELETE_LOGICO','UPDATE'), 'usuario', NEW.id_usuario,
+      JSON_OBJECT('nome',OLD.nome,'login',OLD.login,'perfil',OLD.perfil,'ativo',OLD.ativo),
+      JSON_OBJECT('nome',NEW.nome,'login',NEW.login,'perfil',NEW.perfil,'ativo',NEW.ativo));
+END$$
+
+CREATE TRIGGER trg_aud_cupom_ai
+AFTER INSERT ON cupom
+FOR EACH ROW
+BEGIN
+    CALL sp_registrar_auditoria('INSERT','cupom',NEW.id_cupom,NULL,
+      JSON_OBJECT('codigo',NEW.codigo,'tipo_desconto',NEW.tipo_desconto,'valor_beneficio',NEW.valor_beneficio,'ativo',NEW.ativo));
+END$$
+
+CREATE TRIGGER trg_aud_cupom_au
+AFTER UPDATE ON cupom
+FOR EACH ROW
+BEGIN
+    CALL sp_registrar_auditoria(IF(OLD.ativo=1 AND NEW.ativo=0,'DELETE_LOGICO','UPDATE'), 'cupom', NEW.id_cupom,
+      JSON_OBJECT('codigo',OLD.codigo,'valor_beneficio',OLD.valor_beneficio,'ativo',OLD.ativo),
+      JSON_OBJECT('codigo',NEW.codigo,'valor_beneficio',NEW.valor_beneficio,'ativo',NEW.ativo));
+END$$
+
+
+-- Timestamps adicionais controlados pelo servidor e historicos append-only.
+CREATE TRIGGER trg_historico_preco_bi
+BEFORE INSERT ON historico_preco
+FOR EACH ROW
+BEGIN
+    IF COALESCE(@permitir_historico_preco, 0) &lt;&gt; 1 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Historico de preco e gerado pelo sistema';
+    END IF;
+    SET NEW.data_alteracao = CURRENT_TIMESTAMP;
+END$$
+
+CREATE TRIGGER trg_historico_preco_bu
+BEFORE UPDATE ON historico_preco
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Historico de preco e imutavel';
+END$$
+
+CREATE TRIGGER trg_historico_preco_bd
+BEFORE DELETE ON historico_preco
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Historico de preco nao pode ser excluido';
+END$$
+
+CREATE TRIGGER trg_historico_status_bi
+BEFORE INSERT ON historico_status_pedido
+FOR EACH ROW
+BEGIN
+    IF COALESCE(@permitir_historico_status, 0) &lt;&gt; 1 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Historico de status e gerado pelo sistema';
+    END IF;
+    SET NEW.data_mudanca = CURRENT_TIMESTAMP;
+END$$
+
+CREATE TRIGGER trg_log_auditoria_bi
+BEFORE INSERT ON log_auditoria
+FOR EACH ROW
+BEGIN
+    IF COALESCE(@permitir_log_auditoria, 0) &lt;&gt; 1 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Log de auditoria e gerado por rotinas internas';
+    END IF;
+    SET NEW.data_evento = CURRENT_TIMESTAMP;
+    SET NEW.ip_origem = COALESCE(@app_ip_origem, NEW.ip_origem, 'NAO_INFORMADO');
+END$$
+
+CREATE TRIGGER trg_solicitacao_titular_bi
+BEFORE INSERT ON solicitacao_titular
+FOR EACH ROW
+BEGIN
+    SET NEW.data_solicitacao = CURRENT_TIMESTAMP;
+END$$
+
+CREATE TRIGGER trg_solicitacao_titular_bu
+BEFORE UPDATE ON solicitacao_titular
+FOR EACH ROW
+BEGIN
+    DECLARE v_perfil VARCHAR(20);
+    IF NEW.data_solicitacao &lt;&gt; OLD.data_solicitacao THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'data_solicitacao e gerada pelo servidor';
+    END IF;
+    IF NEW.situacao &lt;&gt; OLD.situacao AND NOT (
+        (OLD.situacao = 'ABERTA' AND NEW.situacao IN ('EM_ATENDIMENTO','CONCLUIDA','NEGADA')) OR
+        (OLD.situacao = 'EM_ATENDIMENTO' AND NEW.situacao IN ('CONCLUIDA','NEGADA'))
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Transicao de solicitacao do titular invalida';
+    END IF;
+    IF NEW.situacao IN ('EM_ATENDIMENTO','CONCLUIDA','NEGADA') AND NEW.situacao &lt;&gt; OLD.situacao THEN
+        IF @app_id_usuario IS NULL THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Atendimento da solicitacao exige usuario interno';
+        END IF;
+        SELECT perfil INTO v_perfil FROM usuario WHERE id_usuario = @app_id_usuario AND ativo = 1;
+        IF v_perfil NOT IN ('SUPORTE','ADMINISTRADOR') THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Perfil sem permissao para atender solicitacao LGPD';
+        END IF;
+    END IF;
+    IF NEW.situacao = 'CONCLUIDA' AND OLD.situacao &lt;&gt; 'CONCLUIDA' THEN
+        SET NEW.data_conclusao = CURRENT_TIMESTAMP;
+    ELSEIF NOT (NEW.data_conclusao &lt;=&gt; OLD.data_conclusao) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'data_conclusao e controlada pelo servidor';
+    END IF;
+END$$
+
+CREATE TRIGGER trg_pedido_bd
+BEFORE DELETE ON pedido
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pedido nao pode ser excluido fisicamente';
+END$$
+
+CREATE TRIGGER trg_pagamento_bd
+BEFORE DELETE ON pagamento
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pagamento deve ser preservado para auditoria';
+END$$
+
+CREATE TRIGGER trg_estorno_bd
+BEFORE DELETE ON estorno
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Estorno deve ser preservado para auditoria';
+END$$
+
+CREATE TRIGGER trg_entrega_bd
+BEFORE DELETE ON entrega
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Historico de entrega nao pode ser excluido';
+END$$
+
+CREATE TRIGGER trg_avaliacao_bd
+BEFORE DELETE ON avaliacao
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Avaliacao nao pode ser excluida fisicamente';
+END$$
+
+CREATE TRIGGER trg_cliente_bd
+BEFORE DELETE ON cliente
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Use inativacao ou sp_anonimizar_titular; DELETE fisico proibido';
+END$$
+
+CREATE TRIGGER trg_entregador_bd
+BEFORE DELETE ON entregador
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Use inativacao ou sp_anonimizar_titular; DELETE fisico proibido';
+END$$
+
+CREATE TRIGGER trg_restaurante_bd
+BEFORE DELETE ON restaurante
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Restaurante deve ser inativado, nao excluido';
+END$$
+
+CREATE TRIGGER trg_produto_bd
+BEFORE DELETE ON produto
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Produto deve ser inativado, nao excluido';
+END$$
+
+CREATE TRIGGER trg_usuario_bd
+BEFORE DELETE ON usuario
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Usuario deve ser inativado, nao excluido';
+END$$
+
+CREATE TRIGGER trg_cupom_bd
+BEFORE DELETE ON cupom
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cupom deve ser inativado, nao excluido';
+END$$
+
+CREATE TRIGGER trg_endereco_cliente_bd
+BEFORE DELETE ON endereco_cliente
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Endereco deve ser inativado, nao excluido';
+END$$
+
+
+DELIMITER ;
+
+-- ============================================================================
+-- 14. OBSERVACOES OPERACIONAIS E PONTOS DE CONTROLE
+-- ============================================================================
+-- A. Antes de alterar preco_tabela, a aplicacao deve definir @app_id_usuario.
+--    O trigger trg_produto_au grava o historico_preco automaticamente.
+-- B. Para finalizar pedido, a aplicacao deve abrir START TRANSACTION, inserir
+--    pedido, itens e pagamentos, chamar sp_confirmar_pedido(id) e entao COMMIT.
+--    A procedure exige transacao ativa; em falha faz ROLLBACK integral. Ela
+--    bloqueia pedido, cliente, cupom e pagamentos e valida os requisitos.
+-- C. A atribuicao de entrega deve ser feita com INSERT em entrega para pedido
+--    PRONTO. O trigger atualiza pedido para EM_ROTA e entregador para EM_ENTREGA.
+-- D. Alteracoes de estado da entrega devem usar CALL sp_atualizar_entrega(id,
+--    'COLETADA'|'CONCLUIDA'|'CANCELADA', distancia_km, maioridade_conferida).
+--    A rotina recalcula a disponibilidade do entregador ao final da transacao.
+-- E. A avaliacao deve ser inserida na tabela avaliacao; o trigger limita a
+--    inclusao a pedidos entregues ha no maximo 7 dias.
+-- F. Estorno por arrependimento apos entrega deve usar CALL sp_solicitar_estorno.
+--    Cancelamentos geram os estornos automaticamente conforme RN14.
+-- G. CPF: a aplicacao deve chamar fn_valida_cpf(cpf_em_texto) antes de cifrar;
+--    armazenar cpf_cifrado e cpf_hash HMAC-SHA-256, nunca o CPF puro.
+-- H. CNPJ: restaurante.cnpj e validado pelas triggers usando fn_valida_cnpj().
+-- I. Nao conceder DELETE/UPDATE em log_auditoria a usuarios da aplicacao.
+--    As triggers bloqueiam UPDATE e DELETE; o controle de acesso deve reforcar.
+-- J. A restricao UNIQUE funcional de endereco_cliente garante no maximo um
+--    endereco principal ativo por cliente. A garantia de pelo menos um endereco
+--    principal ativo deve ser concluida pela transacao/procedure de cadastro.
+-- K. O evento ev_anonimizacao_diaria depende de event_scheduler=ON no servidor.
+-- L. A carga inicial contem exatamente cinco formas de pagamento, conforme RF15.
+-- M. CPF e validado em texto puro antes da cifragem pela aplicacao; o banco
+--    recebe apenas cpf_cifrado e cpf_hash HMAC-SHA-256. Nao grave CPF em claro.
+-- N. A aplicacao deve implementar integralmente a matriz RBAC da secao 3.1,
+--    inclusive filtros de leitura por titular/restaurante e eventos de acesso.
+-- O. Conceda a contas da aplicacao somente privilegios minimos. A tabela
+--    log_auditoria deve ter SELECT para perfis autorizados; INSERT ocorre por
+--    rotinas internas/DEFINER; UPDATE e DELETE devem ser negados.
+-- P. O script usa valores mestre para forma_pagamento; demais cadastros sao
+--    inseridos pela aplicacao, respeitando as procedures e as permissoes.
+-- Q. O timezone America/Sao_Paulo deve estar carregado nas tabelas de fuso do MySQL.
+-- R. Algumas garantias de concorrencia/seguranca tambem dependem dos privilegios
+--    SQL, do nivel REPEATABLE READ e da configuracao da aplicacao.
+-- ============================================================================
+</code></pre></div>
+      <div class="viewer-footer ddl-footer"><span>Visualização local do arquivo original fornecido; nenhum fetch() de arquivo SQL externo é usado.</span><span id="copyFeedback" role="status" aria-live="polite"></span></div>
+    </div></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/@panzoom/panzoom@4.6.2/dist/panzoom.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
